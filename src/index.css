@@ -1,0 +1,41 @@
+* {
+  font-family: Roboto sans-serif, ubuntu, verdana;
+}
+
+body {
+  background-color: #fafafa;
+}
+
+nav {
+  border: 1px solid #eee;
+}
+
+nav ul li a:hover {
+  background-color: white;
+  color: green !important;
+}
+
+.project-summary {
+  padding: 10px;
+}
+
+.show-up {
+  border: 1px solid #eee;
+}
+
+.card-title p {
+  word-break: break-all;
+}
+
+.sign-in {
+  padding: 50px !important;
+  margin: 50px 0px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.sign-in-btn:hover {
+  //backgorund-color: white;
+}
+.signin-logo {
+  margin-bottom: 20px;
+}
