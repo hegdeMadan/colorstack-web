@@ -29,6 +29,7 @@ const mapStateToProps = (state) => {
    console.log(state)
   return {
     projects: state.firestore.ordered.projects,
+    initials: state.firebase.profile.initials,
     auth: state.firebase.auth,
     notifications: state.firestore.ordered.notifications
   }

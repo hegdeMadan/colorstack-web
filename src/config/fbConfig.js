@@ -1,9 +1,10 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/storage'
 import 'firebase/auth'
 
  // Initialize Firebase
-  var config = {
+  const config = {
     apiKey: "AIzaSyBxCqVbDzlntngs45istem-SwrLdnjEDPo",
     authDomain: "react-redux-blogg.firebaseapp.com",
     databaseURL: "https://react-redux-blogg.firebaseio.com",
@@ -12,7 +13,8 @@ import 'firebase/auth'
     messagingSenderId: "644792013213"
   };
 
-firebase.initializeApp(config);
-firebase.firestore().settings({timestampsInSnapshots: true})
+  firebase.initializeApp(config);
+  firebase.storage()
+  firebase.firestore().settings({timestampsInSnapshots: true})
 
 export default firebase

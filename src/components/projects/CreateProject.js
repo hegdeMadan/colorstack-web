@@ -8,20 +8,28 @@ class CreateProject extends Component {
     super();
       this.state = {
         title: '',
-        content: ''
+        content: '',
+        image:''
       }
   }
+   // listening to file selection
+  // handleChange = (e) => {
+  //   this.setState({
+  //     [e.target.id]: e.target.files[0]
+  //   }, () => {
+  //     console.log("state: ", this.state)
+  //   })
+  // }
 
   // handling on submit
   handleSubmit = (e) => {
     e.preventDefault()
-    //console.log('works')
-      this.setState(() => {
-        return {
+      this.setState({
           title: this.refs.title.value,
-          content: this.refs.content.value
-        }
+          content: this.refs.content.value,
+          image: this.refs.image.files[0]
       }, () => {
+        console.log(this.state)
         this.props.createProject(this.state)
         this.props.history.push('/')
       })
@@ -41,6 +49,9 @@ if(!auth.uid) return <Redirect to='/signin' /> // redirecting signedOut user to 
               <input type="text" id='title' ref="title" />
               <label htmlFor="title">Project Title</label>
             </div>
+              <div className="file">
+                <input type="file" ref="image" id="imagePath" />
+              </div>
             <div className="input-field">
               <textarea id="content" ref="content" className="materialize-textarea" ></textarea>
               <label htmlFor="content">Project Content</label>
