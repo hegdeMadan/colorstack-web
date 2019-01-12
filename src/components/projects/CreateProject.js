@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import firebase from 'firebase/app'
 import { createProject } from '../../store/actions/ProjectActions'
 
 class CreateProject extends Component {
@@ -9,37 +10,68 @@ class CreateProject extends Component {
       this.state = {
         title: '',
         content: '',
-        image:''
+        imageUrl:'',
+        progress: 0
       }
   }
-   // listening to file selection
-  // handleChange = (e) => {
-  //   this.setState({
-  //     [e.target.id]: e.target.files[0]
-  //   }, () => {
-  //     console.log("state: ", this.state)
-  //   })
-  // }
 
   // handling on submit
+  // stateChange = (e) => {
+  //   e.preventDefault()
+  //   // this.imageUpload()
+  //     this.setState({
+  //         title: this.refs.title.value,
+  //         content: this.refs.content.value,
+  //         imageUrl
+  //     }, () => {
+  //       console.log(this.state)
+  //       this.props.createProject(this.state)
+  //       this.props.history.push('/')
+  //     })
+  //   }
+
   handleSubmit = (e) => {
     e.preventDefault()
-      this.setState({
-          title: this.refs.title.value,
-          content: this.refs.content.value,
-          image: this.refs.image.files[0]
-      }, () => {
-        console.log(this.state)
-        this.props.createProject(this.state)
-        this.props.history.push('/')
+    const { uid } = this.props.auth
+    const image = this.refs.image.files[0]
+    const storage = firebase.storage()
+    const storageRef = storage.ref(`wallposts/${uid}` + image.name) // creating storage reference
+
+    // inserting image to firestore
+    const uploadTask = storageRef.put(image)
+    uploadTask.on('state_changed',
+    (snapshot) => {
+      // catch image upload progress
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      console.log('Upload is ' + progress + '% done')
+      this.setState({progress})
+    },
+    (error) => {
+      console.log(error)
+    },
+    () => {
+      // getting download url for the image
+      uploadTask.snapshot.ref.getDownloadURL().then(url => {
+        var imageUrl = url
+        this.setState(() => {
+          return {
+            title: this.refs.title.value,
+            content: this.refs.content.value,
+            imageUrl
+          }
+        }, () => {
+          this.props.createProject(this.state)
+          this.props.history.push('/')
+        })
       })
-    }
+    })
+  }
+
 
   render() {
-
-// getting uid from props
-const { auth } = this.props
-if(!auth.uid) return <Redirect to='/signin' /> // redirecting signedOut user to signin page
+    // getting uid from props
+    const { auth } = this.props
+    if(!auth.uid) return <Redirect to='/signin' /> // redirecting signedOut user to signin page
     return(
       <div className="container">
         <div className="row">
@@ -49,9 +81,16 @@ if(!auth.uid) return <Redirect to='/signin' /> // redirecting signedOut user to 
               <input type="text" id='title' ref="title" />
               <label htmlFor="title">Project Title</label>
             </div>
-              <div className="file">
+
+            <div className="file-field input-field">
+              <div className="btn">
                 <input type="file" ref="image" id="imagePath" />
               </div>
+              <div className="file-path-wrapper">
+                <input className="file-path validate" type="text" placeholder="choose image" />
+              </div>
+            </div>
+
             <div className="input-field">
               <textarea id="content" ref="content" className="materialize-textarea" ></textarea>
               <label htmlFor="content">Project Content</label>
@@ -60,6 +99,19 @@ if(!auth.uid) return <Redirect to='/signin' /> // redirecting signedOut user to 
               <button className="btn pink lighten-1">Create</button>
             </div>
           </form>
+          <div className="container row">
+          <div className="upload-progress col l6 offset-l3">
+            <label htmlFor="progress"> Sit back! File's being uploaded </label>
+            <progress id="progress" value={this.state.progress} max="100" className="progress-bar"> </progress>
+          </div>
+          { this.state.progress
+            ? <div className="upload-progress col l6 offset-l3">
+                <label htmlFor="progress"> Sit back! File's being uploaded </label>
+                <progress id="progress" value={this.state.progress} max="100" />
+              </div>
+            : null
+          }
+          </div>
         </div>
       </div>
     )

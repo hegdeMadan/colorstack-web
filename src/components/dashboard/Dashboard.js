@@ -17,7 +17,7 @@ class Dashboard extends Component {
             <ProjectList projects={projects} />
           </div>
           <div className="col s12 offset-m1 hide-on-med-and-down l4">
-            <Notification notifications={notifications}/>
+            <Notification notifications={notifications} />
           </div>
         </div>
       </div>

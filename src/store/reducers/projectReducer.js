@@ -14,10 +14,6 @@ const projectReducer = (state = initState, action) => {
     case 'CREATE_PROJECT_ERR':
           // console.log('create project error', action.err)
           return state
-    case 'UPLOAD_IMAGE':
-          return state
-    case 'UPLOAD_ERR':
-          return state
     default:
     return state
   }
