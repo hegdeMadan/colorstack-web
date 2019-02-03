@@ -36,7 +36,7 @@ class SignUp extends Component {
     return(
       <div className="container">
         <div className="row">
-          <form className="col m6 offset-m3 sign-up sign-in" onSubmit={this.handleSubmit}>
+          <form className="col l6 offset-l3 m6 offset-m3 s10 offset-s1 sign-up sign-in" onSubmit={this.handleSubmit}>
             <h5 className=""> Sign Up </h5>
             <div className="input-field">
               <input id="first_name" type="text" ref="firstName" />

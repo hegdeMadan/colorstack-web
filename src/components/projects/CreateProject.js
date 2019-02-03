@@ -6,7 +6,7 @@ import { createProject } from '../../store/actions/ProjectActions'
 
 class CreateProject extends Component {
   constructor() {
-    super();
+    super()
       this.state = {
         title: '',
         content: '',
@@ -14,21 +14,6 @@ class CreateProject extends Component {
         progress: 0
       }
   }
-
-  // handling on submit
-  // stateChange = (e) => {
-  //   e.preventDefault()
-  //   // this.imageUpload()
-  //     this.setState({
-  //         title: this.refs.title.value,
-  //         content: this.refs.content.value,
-  //         imageUrl
-  //     }, () => {
-  //       console.log(this.state)
-  //       this.props.createProject(this.state)
-  //       this.props.history.push('/')
-  //     })
-  //   }
 
   handleSubmit = (e) => {
     e.preventDefault()

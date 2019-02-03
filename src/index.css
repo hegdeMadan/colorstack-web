@@ -1,13 +1,80 @@
-* {
-  font-family: Roboto sans-serif, ubuntu, verdana;
-}
-
 body {
   background-color: #fafafa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+  box-shadow: none;
+}
+
+input::placeholder {
+  color: #777;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 100%;
+    max-width: initial;
+    margin: 0;
+    padding: 0px;
+  }
+  .col {
+    width: 100%;
+    margin: 0;
+    padding: 0px !important;
+  }
+  .card {
+    margin: 0;
+    padding: 0px !important;
+    border-radius: 0px !important;
+  }
+}
+
+@media (max-width: 780px) and (min-width: 601px) {
+  .col {
+    width: 90%;
+    margin: 0;
+    padding: 0px !important;
+  }
+}
+
+@media (max-width: 280px) {
+  .brand-logo {
+    display: none !important;
+  }
+}
+
+/*........masonry layout............*/
+
+/* .container {
+  width: 100% !important;
+} */
+.brand-logo {
+  left: 15% !important;
+}
+.row .col {
+  /* height: 550px; */
+  grid-auto-flow: column !important;
+}
+
+/*..........navbar..........*/
+.brush {
+  position: relative;
+  top: 5px;
+  font-size: 26px !important;
+}
+
+.brush:hover {
+  color: black;
 }
 
 nav {
-  border: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 nav ul li a:hover {
@@ -15,29 +82,177 @@ nav ul li a:hover {
   color: green !important;
 }
 
+@keyframes thumbup {
+  0% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(-15deg)
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.thumb-up {
+  //animation: thumbup 1s linear infinite;
+}
+
+i {
+  color: #555;
+}
+
+.counts {
+  display: inline-block;
+  margin-left: 10px;
+}
+.counts span {
+  font-size: 13px;
+  color: #777;
+  margin: 0px 5px;
+}
 .name {
   margin: 20px;
+}
+
+.date-format {
+  font-size: 12px;
+  margin-left: 10px;
+
+}
+.show-up, .profile {
+  border: 1px solid #eee;
+}
+
+.column {
+  //max-height: 590px !important;
+  grid-row-end: 0;
+}
+
+.card {
+  border-radius: 10px;
+  padding: 5px;
+}
+.project-summary:hover {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2) !important;
+  //border-bottom: 3px solid #fafafa;
+}
+
+.post p {
+  word-break: break-all;
+}
+
+.post-title {
+  font-weight: 600;
 }
 
 .user-indicator {
   margin-right: 15px;
 }
-/* 
-.user-indicator img {
+.options i {
+  margin-top: 7px;
+}
+.options:hover {
+  cursor: pointer;
+}
+
+.card .card-content {
+  padding: 15px;
+  padding-top: 5px;
+}
+
+.dropdown-options {
+  display: none;
+}
+
+.options div a:hover .dropdown-options {
+  display: block;
+}
+.title {
+  margin-left: 20px;
+}
+.icons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em;
+  padding: 0.5em;
+}
+.post-act {
+  display: flex;
+}
+.options:active {
+  background-color: #eee;
+  border-radius: 5px;
+}
+.icons-wrapper button {
+  padding: 0.1em 0.3em;
+  margin: 0em 0.3em;
+  border: none;
+  background-color: white;
+}
+.icons-wrapper button:hover {
+  cursor: pointer;
+}
+.save span {
+  display: block;
+  padding: 0px 10px;
+}
+
+
+.add-comment {
+  margin: 5px 20px;
+  border-top: 1px solid #eee;
+}
+
+.add-comment form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-comment input {
+  border: none !important;
+  /* width: 95% !important;
+  position: relative;
+  left: 2.5%; */
+}
+.add-comment i {
+  font-size: 18px;
+  position: relative;
+  top: 10px;
+}
+
+.card-reveal {
+  position: relative;
+  margin-top: 70px;
+}
+
+.card-reveal .add-comment {
   position: absolute;
-  top: 5px;
-} */
-
-.date-format {
-  font-size: 12px;
-
-}
-.show-up {
-  border: 1px solid #eee;
+  bottom: 0;
 }
 
-.card-title p {
-  word-break: break-all;
+/*..........comments............*/
+
+.loaded-comments {
+  border-top: 1px solid #eee;
+  border-radius: 5px;
+}
+
+.load-comments:hover {
+  cursor: pointer;
+}
+
+.loaded-comments div p {
+  font-size: 14px;
+  //background-color: #eee;
+}
+
+.loaded-comments p span {
+  margin-right: 0.5em;
+}
+
+.commentor {
+  font-weight: bold;
 }
 
 .notification-card {
@@ -60,4 +275,117 @@ nav ul li a:hover {
 .upload-progress {
   padding: 10px;
   background-color: #fff;
+}
+
+
+/* ................profile.............. */
+.profile {
+  margin-top: 30px;
+}
+
+.profile-image-container {
+  border-bottom: 2px solid #eee;
+}
+
+.profile-image {
+  margin: 10px 0 20px 0;
+  position: relative;
+}
+.profile-image img {
+  display: block;
+  margin: auto;
+}
+
+.user-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.user-details ul li {
+  list-style-type: none;
+  padding: 20px;
+}
+
+.user-details ul {
+  border-right: 2px solid #eee;
+}
+
+.user-details ul li:hover {
+  border-left: 3px solid #333;
+  border-radius: 3px;
+  background-color: #eee;
+  animation: bordering 0.1s linear;
+}
+
+.active-tab {
+  border-left: 3px solid #333;
+  border-radius: 3px;
+  //background-color: #eee;
+}
+
+@keyframes bordering {
+  0% {
+    border-left: 0px solid #333;
+  }
+  50% {
+    border-left: 2px solid #333;
+    border-radius: 1px;
+  }
+  100% {
+    border-left: 3px solid #333;
+    border-radius: 3px;
+  }
+}
+
+.profile-details span {
+  display: block;
+  margin: 20px 5px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+.editable {
+  font-size: 16px;
+  display: none;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+.editable:hover {
+  background-color: #eee;
+}
+.profile-details span:hover .editable {
+  display: block;
+}
+.edit {
+  font-size: 12px;
+  padding: 5px;
+  border-radius: 5px;
+}
+.edit:hover {
+  background-color: #eee;
+}
+.edit-icon {
+  font-size: 12px;
+}
+
+.edit-profile-container {
+  padding: 10px;
+}
+
+.edit-profile-container form {
+  border: 1px solid #eee;
+}
+
+.edit-pro label {
+  font-size: 16px;
+}
+
+.edit-pro i {
+  font-size: 16px;
+}
+
+.edit-pro button {
+  background-color: black;
+  border-radius: 5px;
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import Notification from './Notification.js'
 import ProjectList from '../projects/ProjectList'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { Redirect } from 'react-router-dom'
+import Notification from './Notification'
 
 class Dashboard extends Component {
   render() {
@@ -13,10 +13,10 @@ class Dashboard extends Component {
     return(
       <div className="dashboard container">
         <div className="row">
-          <div className="col s12 m8 offset-m2 l8">
+          <div className="col l8 m12 s12">
             <ProjectList projects={projects} />
           </div>
-          <div className="col s12 offset-m1 hide-on-med-and-down l4">
+          <div className="col l4 hide-on-med-and-down">
             <Notification notifications={notifications} />
           </div>
         </div>
@@ -26,7 +26,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => {
-   console.log(state)
+  console.log("ref: ", state)
   return {
     projects: state.firestore.ordered.projects,
     initials: state.firebase.profile.initials,
@@ -36,9 +36,11 @@ const mapStateToProps = (state) => {
 }
 
 export default compose (
-  connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'projects', orderBy: ['createdAt', 'desc'] },
+    { collection: 'projects',
+    orderBy: ['createdAt', 'desc']
+    },
     { collection: 'notifications', limit: 3, orderBy: ['time', 'desc'] }
-  ])
+  ]),
+  connect(mapStateToProps)
 )(Dashboard)

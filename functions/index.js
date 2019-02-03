@@ -31,10 +31,9 @@ exports.projectCreated = functions.firestore
   })
 
 // retreiving data of the new user
-// this will help to notify users when new user is created
+// this will notify new users
 exports.userJoined = functions.auth.user()
   .onCreate(user => {
-
     // getting indivisual document belongs to the newly created user to get data
     return admin.firestore().collection('users')
       .doc(user.uid).get()
@@ -42,7 +41,7 @@ exports.userJoined = functions.auth.user()
 
         const userData = doc.data() // retreiving newly created user-data from the document
         const notificationContent = {
-          content: "User joined",
+          content: "joined the club",
           user: `${userData.firstName} ${userData.lastName}`,
           time: admin.firestore.FieldValue.serverTimestamp()
         }

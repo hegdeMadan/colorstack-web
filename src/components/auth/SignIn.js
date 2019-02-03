@@ -30,7 +30,7 @@ class SignIn extends Component {
     return(
       <div className="container">
         <div className="row">
-          <form className="col m6 offset-m2 sign-in" onSubmit={this.handleSubmit}>
+          <form className="col l6 offset-l3 m6 offset-m2 s10 offset-s1 sign-in" onSubmit={this.handleSubmit}>
             <h5 className="signin-logo"> Sign In </h5>
             <div className="input-field">
               <input id="email" type="email" ref="email" />

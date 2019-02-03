@@ -15,9 +15,11 @@ export const createProject = (project) => {
       authorSecondName: profile.lastName,
       authorId: userId,
       createdAt: new Date()
-    }).then(() => {
+    })
+    .then(() => {
       dispatch({type:'CREATE_PROJECT', project })
-    }).catch((err) => {
+    })
+    .catch((err) => {
       dispatch({type:'CREATE_PROJECT_ERR', err })
     })
   }

@@ -11,7 +11,10 @@ const Navbar = (props) => {
     <div className="navbar-fixed">
       <nav className="nav-wrapper white z-depth-0">
         <div className="container">
-          <Link to='/' className="brand-logo hide-on-med-and-down black-text"> blog </Link>
+          <Link to='/'
+            className="brand-logo hide-on-sm-only black-text"> 
+              blog
+            </Link>
           { displaySignInOrSignOut }
         </div>
       </nav>
