@@ -12,8 +12,8 @@ const Navbar = (props) => {
       <nav className="nav-wrapper white z-depth-0">
         <div className="container">
           <Link to='/'
-            className="brand-logo hide-on-sm-only black-text"> 
-              blog
+            className="brand-logo hide-on-sm-only black-text">
+              Title
             </Link>
           { displaySignInOrSignOut }
         </div>

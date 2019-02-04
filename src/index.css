@@ -33,6 +33,19 @@ input::placeholder {
     padding: 0px !important;
     border-radius: 0px !important;
   }
+  .profile-tabs ul {
+    display: flex;
+    //justify-content: space-around !important;
+    background-color: #eee;
+  }
+  .profile-tabs ul li {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+  }
+
 }
 
 @media (max-width: 780px) and (min-width: 601px) {
@@ -129,7 +142,7 @@ i {
   grid-row-end: 0;
 }
 
-.card {
+.dashboard .card {
   border-radius: 10px;
   padding: 5px;
 }
@@ -277,115 +290,51 @@ i {
   background-color: #fff;
 }
 
-
 /* ................profile.............. */
-.profile {
-  margin-top: 30px;
+.profile-wrapper .col {
+  padding: 0px;
+  margin: 0;
 }
 
-.profile-image-container {
-  border-bottom: 2px solid #eee;
+.profile-picture .image img {
+  width: 180px;
+  height: 180px;
+  //margin-left: 5px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  transform: translateY(-50%);
+}
+.profile-picture .image img:hover {
+  opacity: 0.95;
+}
+.profie-about-cover{
+    //z-index: 1;
 }
 
-.profile-image {
-  margin: 10px 0 20px 0;
-  position: relative;
-}
-.profile-image img {
-  display: block;
-  margin: auto;
-}
-
-.user-name {
+.profile-tabs ul {
   display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.profile-tabs ul li {
+  flex: 1;
+  text-align: center;
+  display: inline-block;
+  padding: 15px 0px;
+  margin: 0px 15px;
   font-weight: bold;
 }
-.user-details ul li {
-  list-style-type: none;
-  padding: 20px;
+.profile-tabs ul li::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: green;
+    transition: width .2s;
 }
 
-.user-details ul {
-  border-right: 2px solid #eee;
+.profile-tabs ul li:hover::after {
+  width: 100%;
 }
-
-.user-details ul li:hover {
-  border-left: 3px solid #333;
-  border-radius: 3px;
-  background-color: #eee;
-  animation: bordering 0.1s linear;
-}
-
-.active-tab {
-  border-left: 3px solid #333;
-  border-radius: 3px;
-  //background-color: #eee;
-}
-
-@keyframes bordering {
-  0% {
-    border-left: 0px solid #333;
-  }
-  50% {
-    border-left: 2px solid #333;
-    border-radius: 1px;
-  }
-  100% {
-    border-left: 3px solid #333;
-    border-radius: 3px;
-  }
-}
-
-.profile-details span {
-  display: block;
-  margin: 20px 5px;
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 5px;
-}
-.editable {
-  font-size: 16px;
-  display: none;
-  padding: 3px 5px;
-  border-radius: 3px;
-}
-.editable:hover {
-  background-color: #eee;
-}
-.profile-details span:hover .editable {
-  display: block;
-}
-.edit {
-  font-size: 12px;
-  padding: 5px;
-  border-radius: 5px;
-}
-.edit:hover {
-  background-color: #eee;
-}
-.edit-icon {
-  font-size: 12px;
-}
-
-.edit-profile-container {
-  padding: 10px;
-}
-
-.edit-profile-container form {
-  border: 1px solid #eee;
-}
-
-.edit-pro label {
-  font-size: 16px;
-}
-
-.edit-pro i {
-  font-size: 16px;
-}
-
-.edit-pro button {
-  background-color: black;
-  border-radius: 5px;
+.profile-tabs ul li:hover {
+    cursor: pointer;
 }

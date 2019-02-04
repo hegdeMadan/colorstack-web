@@ -5,6 +5,7 @@ import { signOutAction } from '../../store/actions/AuthActions'
 
 const SignedInLinks = (props) => {
   const { initials } = props
+  const id = props.auth.uid
   return(
     <div>
       <ul className="right nav-links">
@@ -13,7 +14,7 @@ const SignedInLinks = (props) => {
             <i className="material-icons brush">brush</i>
           </NavLink>
         </li>
-        <li> <NavLink to='/profile' className="btn btn-floating grey lighten-4 z-depth-0 black-text"> {initials} </NavLink></li>
+        <li> <NavLink to={'/profile/'+ id} className="btn btn-floating grey lighten-4 z-depth-0 black-text"> {initials} </NavLink></li>
         <li> <NavLink to='/' className="black-text" onClick={props.signOut}> Log Out </NavLink> </li>
       </ul>
     </div>
@@ -23,7 +24,8 @@ const SignedInLinks = (props) => {
 const mapStateToProps = (state) => {
   // console.log(state)
   return {
-    initials: state.firebase.profile.initials
+    initials: state.firebase.profile.initials,
+    auth: state.firebase.auth
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createLike } from '../../../store/actions/LikeActions'
-import share from '../../../static/icons/share.png'
+//import share from '../../../static/icons/share.png'
 
 class PostCerdits extends Component {
   constructor() {
