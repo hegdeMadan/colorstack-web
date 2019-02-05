@@ -45,7 +45,7 @@ class PostCerdits extends Component {
           <span className="">
             <i className="material-icons center"
                 title="add to your collection">
-              collections
+              add_to_photos
             </i>
           </span>
         </div>

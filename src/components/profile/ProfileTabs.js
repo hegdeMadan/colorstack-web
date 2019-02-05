@@ -1,36 +1,30 @@
 import React, { Component } from 'react'
+import Tabs from './Tabs'
 
 class ProfileTabs extends Component {
   constructor() {
     super()
     this.state = {
-
+      tabs: ['Bio', 'Followers', 'Art Works', 'Collections' ]
     }
   }
 
-  handleClick = (e) => {
-    console.log(e.target.li)
-  }
+    getTab = (item) => {
+      this.props.onClick(item)
+    }
 
   render() {
     return(
-      <div>
-        <div className="profile-tabs">
-          <ul>
-            <li onClick={this.handleClick}>
-              Bio
-            </li>
-            <li onClick={this.handleClick}>
-              Followers
-            </li>
-            <li onClick={this.handleClick}>
-              Art Works
-            </li>
-            <li className="waves-effect" onClick={this.handleClick}>
-              Collections
-            </li>
-          </ul>
-        </div>
+      <div className="tabs-wrapper">
+          {
+            this.state.tabs.map((item, index) => {
+              return(
+                <div key={index}>
+                  <Tabs item={item} onClick={this.getTab} />
+                </div>
+              )
+            })
+          }
       </div>
     )
   }

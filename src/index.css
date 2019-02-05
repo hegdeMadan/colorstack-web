@@ -18,7 +18,7 @@ input::placeholder {
 
 @media only screen and (max-width: 600px) {
   .container {
-    width: 100%;
+    width: 98%;
     max-width: initial;
     margin: 0;
     padding: 0px;
@@ -40,7 +40,7 @@ input::placeholder {
   }
   .profile-tabs ul li {
     flex: 1;
-    text-align: center;
+    text-align: left;
     padding: 10px;
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
@@ -53,6 +53,9 @@ input::placeholder {
     width: 90%;
     margin: 0;
     padding: 0px !important;
+  }
+  .profile-picture .container .row {
+    margin-left: 10px;
   }
 }
 
@@ -302,25 +305,26 @@ i {
   //margin-left: 5px;
   border-radius: 50%;
   border: 3px solid #fff;
-  transform: translateY(-50%);
 }
 .profile-picture .image img:hover {
   opacity: 0.95;
 }
-.profie-about-cover{
-    //z-index: 1;
-}
 
-.profile-tabs ul {
+.profile-picture .container {
+  transform: translateY(-50%);
+}
+.profile-picture .image span:hover {
+  cursor: pointer;
+}
+.tabs-wrapper {
   display: flex;
+  transform: translateY(150%);
 }
 
-.profile-tabs ul li {
+.tabs-wrapper div {
   flex: 1;
   text-align: center;
   display: inline-block;
-  padding: 15px 0px;
-  margin: 0px 15px;
   font-weight: bold;
 }
 .profile-tabs ul li::after {
@@ -337,4 +341,15 @@ i {
 }
 .profile-tabs ul li:hover {
     cursor: pointer;
+}
+
+.bio-wrapper {
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.bio span {
+  display: block;
+  padding: 30px 0px;
 }
