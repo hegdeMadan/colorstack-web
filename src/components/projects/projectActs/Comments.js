@@ -1,36 +1,35 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import CommentDetails from './CommentDetails'
 
-const Comments = ({projectId, comments}) => {
+class Comments extends Component {
+
+  render(){
   // console.log("comments: ", comments)
-  return(
-    <div>
-      <div className="loaded-comments">
-        {comments && comments.map((comment) => {
-          return (
-            <div key={comment.id}>
-              <p>
-                <Link to={'/profile/' + comment.commentFromId}>
-                  <span className="commentor green-text darken-1">
-                    {comment.commentFrom}
-                  </span>
-                </Link>
-                <span>{comment.comment}</span>
-              </p>
-            </div>
-          )
-        })}
+    const { comments, projectId } = this.props
+    return(
+      <div>
+        <div className="loaded-comments">
+          {comments && comments.map((comment) => {
+            return (
+              <div key={comment.id}>
+                <CommentDetails
+                  comment={comment}
+                  projectId={projectId}/>
+              </div>
+            )
+          })}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+}
+const mapStateToProps = (state, ownProps) => {
+  // console.log("state: ", state)
+  return {
+    // profile:
+  }
 }
 
-// const mapStateToProps = (state, ownProps) => {
-//   console.log("state: ", state)
-//   return {
-//
-//   }
-// }
 
-
-export default Comments
+export default connect(mapStateToProps)(Comments)

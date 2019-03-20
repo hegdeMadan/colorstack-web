@@ -5,15 +5,15 @@ import SignedOutLinks from './SignedOutLinks'
 import { connect } from 'react-redux'
 
 const Navbar = (props) => {
-  const { auth } = props // destructuring auth from the store
-  const displaySignInOrSignOut = auth.uid ? <SignedInLinks /> : <SignedOutLinks />
+  const { auth, notifications } = props // destructuring auth from the store
+  const displaySignInOrSignOut = auth.uid ? <SignedInLinks notifications={notifications}/> : <SignedOutLinks />
   return(
     <div className="navbar-fixed">
-      <nav className="nav-wrapper white z-depth-0">
+      <nav className="nav-wrapper z-depth-0">
         <div className="container">
           <Link to='/'
             className="brand-logo hide-on-sm-only black-text">
-              Title
+              logo
             </Link>
           { displaySignInOrSignOut }
         </div>
@@ -25,7 +25,8 @@ const Navbar = (props) => {
 const mapStateToProps = (state) => {
   // console.log("nav" ,state)
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    notifications: state.firestore.ordered.notifications
   }
 }
 

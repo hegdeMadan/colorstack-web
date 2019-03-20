@@ -14,7 +14,9 @@ const Notification = ({ notifications }) => {
                   <span className="green-text">{item && item.user}</span>
                   <span>{" "+item.content}</span>
                   <div>
-                    <span className="grey-text lighten-5">{moment(item.time.toDate()).fromNow()}</span>
+                    <span className="grey-text lighten-5">
+                      {moment(item.time.toDate()).fromNow()}
+                    </span>
                   </div>
                 </li>
               )

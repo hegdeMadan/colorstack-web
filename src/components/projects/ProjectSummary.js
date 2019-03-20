@@ -3,39 +3,95 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
-// import firebase from 'firebase'
 import AddComment from './projectActs/AddComment'
 import PostCredits from './projectActs/PostCredits'
 import Comments from './projectActs/Comments'
+// import FixedCategories from './Categories'
 
 class ProjectSummary extends Component{
+  constructor() {
+    super()
+    this.state = {
+      style: {
+        display: 'none'
+      }
+    }
+  }
 
-  // handleClick = () => {
-  //
-  // }
+  handleClick = () => {
+    // const link = this.refs.url.value
+    //   console.log(link)
+    // link.select()
+    // document.execCommand('copy')
+    // alert("link copied")
+  }
+
   render() {
-    const { project } = this.props
+    // console.log(window.location.href)
+    const currentUrl = window.location.href
+    const { project, auth, comments } = this.props
     const likeCount = project.likeCount ? project.likeCount : 0
-    console.log(this.props.comments)
+    const collected = project.collected ? project.collected : 0
+    // console.log(this.props.comments)
+
   return(
     <div className="card z-depth-0 project-summary show-up post">
+
       <div className="name">
-        <span className="btn btn-floating z-depth-0 black user-indicator">
-          {project.authorFirstName && project.authorFirstName[0]}
-          {project.authorSecondName && project.authorSecondName[0]}
-        </span>
-         <span> {project.authorFirstName} {project.authorSecondName} </span>
-         <span className="right options">
-          <i className="material-icons">more_vert</i>
-        </span>
-      </div>
-      <div className="title">
-        <Link to={'/projectdetails/' + project.id} className="black-text">
-          <p className="post-title"> {project.title} </p>
+        <Link to={'/profile/' + project.authorId} className="black-text">
+          <div className="btn z-depth-0 user-indicator">
+            <span>
+              {project.authorFirstName && project.authorFirstName[0]}
+              {project.authorSecondName && project.authorSecondName[0]}
+            </span>
+          </div>
+          <span className="user_name">
+            {project.authorFirstName} {project.authorSecondName}
+          </span>
         </Link>
+
+          <span className="right options">
+           <button className="btn z-depth-0 transparent"
+            onClick={this.handleClick}>
+             <i className="material-icons">
+              link
+             </i>
+          </button>
+           <div>
+             <input id="icon_prefix" type="text" ref="url"
+              placeholder={`${currentUrl}projectdetails/${project.id}`} />
+           </div>
+         </span>
+
       </div>
-      <div className="card-image">
-        <img src={project.imageUrl} alt="art"/>
+
+      <div className="card-image post_image">
+        <img src={project.imageUrl} alt="art" />
+        <div className="postcredits_wrap">
+          <PostCredits
+            project={project}
+            likeCount={likeCount}
+            collected={collected}
+            auth={auth}/>
+        </div>
+      </div>
+
+      <div className="card-reveal">
+
+        <span className="card-title grey-text text-darken-4">
+          comments
+          <i className="material-icons">close</i>
+        </span>
+
+        {comments && project
+          ? <Comments
+            projectId={project.id}
+            comments={comments}/>
+          : null
+        }
+      </div>
+
+      <div className="card-content">
         <p className="grey-text date-format">
           {project.createdAt && project.createdAt
             .toDate()
@@ -43,23 +99,8 @@ class ProjectSummary extends Component{
               year: "numeric", month: "short", day: "numeric"
           })}
         </p>
-        <PostCredits projectId={project.id} likeCount={likeCount} />
-      </div>
-
-      <div className="card-reveal">
-        <span className="card-title grey-text text-darken-4">
-          comments
-          <i className="material-icons right">close</i>
-        </span>
-        <Comments projectId={project.id} comments={this.props.comments}/>
-        <div className="add-comment valign-wrapper">
-          <AddComment projectId={project.id} />
-        </div>
-      </div>
-
-      <div className="card-content">
-        <p> {project.content} </p>
-          <p className="grey-text lighten-3 load-comments activator">
+        <p className="content"> {project.content} </p>
+          <p className="grey-text lighten-2 load-comments activator">
             Load comments
           </p>
       </div>
@@ -73,10 +114,13 @@ class ProjectSummary extends Component{
 }
 
 const mapStateToProps = (state, ownProps) => {
+//  console.log("proSum: ", state)
   const id = ownProps.project.id
   const comments = state.firestore.ordered[id]
+
   return {
-    comments: comments
+    comments: comments,
+    auth: state.firebase.auth
   }
 }
 
@@ -88,7 +132,7 @@ export default compose (
         doc: props.project.id,
         subcollections: [
           {
-            collection: 'comments',
+            collection: 'comments'
           }
         ],
         storeAs: props.project.id,

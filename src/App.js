@@ -4,10 +4,10 @@ import Navbar from './components/layout/Navbar'
 import Dashboard from './components/dashboard/Dashboard'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
-import CreateProject from './components/projects/CreateProject'
+import ForgotPassword from './components/auth/ForgotPassword'
 import ProjectDetails from './components/projects/ProjectDetails'
 import Profile from './components/profile/Profile'
-import EditProfile from './components/profile/EditProfile'
+// import EditProfile from './components/profile/functions/EditProfile'
 
 class App extends Component {
   render() {
@@ -19,10 +19,9 @@ class App extends Component {
             <Route exact path='/' component={Dashboard} />
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
-            <Route path='/createproject' component={CreateProject} />
+            <Route path='/forgotpassword' component={ForgotPassword} />
             <Route path='/projectdetails/:id' component={ProjectDetails} />
             <Route path='/profile/:id' component={Profile} />
-            <Route path='/editprofile' component={EditProfile} />
           </Switch>
         </div>
       </BrowserRouter>

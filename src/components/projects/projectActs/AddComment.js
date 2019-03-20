@@ -30,7 +30,7 @@ class AddComment extends Component {
 
   render() {
     return(
-      <div className="comments">
+      <div className="addcomment">
         <form action="" onSubmit={this.handleSubmit}>
           <input type="text" ref="comment" placeholder="add your comment..." className="" />
           <button type="submit" className="btn transparent z-depth-0"></button>

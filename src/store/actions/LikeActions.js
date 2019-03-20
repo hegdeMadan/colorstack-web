@@ -4,8 +4,9 @@ export const createLike = (like) => {
     const firestore = getFirestore()
     const profile = getState().firebase.profile
     const userId = getState().firebase.auth.uid
+    console.log("action: ", like)
     const projectId = like.likeToPost
-    let likeCount = like.likeCount + 1
+    // let likeCount = like.likeCount + 1
 
     firestore.collection('projects').doc(projectId)
     .collection('likes')
@@ -13,17 +14,82 @@ export const createLike = (like) => {
       likeToPost: like.likeToPost,
       likeFromId: userId,
       likeFrom: `${profile.firstName} ${profile.lastName}`,
-      likeTime: new Date()
+      likeTime: new Date(),
+      isActive: true
     })
     .then(() => {
       dispatch({type: 'CREATE_LIKE', like})
         firestore.collection('projects').doc(projectId)
         .update({
-          likeCount: likeCount
+          likeCount: like.likeCount + 1
         })
     })
     .catch((error) => {
       dispatch({type: 'CREATE_LIKE_ERROR', error})
+    })
+  }
+}
+
+export const removeLike = (like) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+
+    const firestore = getFirestore()
+    const profile = getState().firebase.profile
+    const userId = getState().firebase.auth.uid
+    console.log("action: ", like)
+    const projectId = like.likeToPost
+    // let likeCount = like.likeCount + 1
+
+    firestore.collection('projects').doc(projectId)
+    .collection('likes').doc(like.id)
+    .update({
+      likeToPost: like.likeToPost,
+      likeFromId: userId,
+      likeFrom: `${profile.firstName} ${profile.lastName}`,
+      likeTime: new Date(),
+      isActive: false
+    })
+    .then(() => {
+      dispatch({type: 'REMOVE_LIKE', like})
+        firestore.collection('projects').doc(projectId)
+        .update({
+          likeCount: like.likeCount - 1
+        })
+    })
+    .catch((error) => {
+      dispatch({type: 'REMOVE_LIKE_ERROR', error})
+    })
+  }
+}
+
+export const updateLike = (like) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+
+    const firestore = getFirestore()
+    const profile = getState().firebase.profile
+    const userId = getState().firebase.auth.uid
+    // console.log("action: ", like)
+    const projectId = like.likeToPost
+    // let likeCount = like.likeCount + 1
+
+    firestore.collection('projects').doc(projectId)
+    .collection('likes').doc(like.id)
+    .update({
+      likeToPost: like.likeToPost,
+      likeFromId: userId,
+      likeFrom: `${profile.firstName} ${profile.lastName}`,
+      likeTime: new Date(),
+      isActive: true
+    })
+    .then(() => {
+      dispatch({type: 'UPDATA_LIKE', like})
+        firestore.collection('projects').doc(projectId)
+        .update({
+          likeCount: like.likeCount + 1
+        })
+    })
+    .catch((error) => {
+      dispatch({type: 'UPDATA_LIKE_ERROR', error})
     })
   }
 }
