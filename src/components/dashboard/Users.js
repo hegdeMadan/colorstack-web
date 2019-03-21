@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 const Users = ({users}) => {
   return(
     <div className="user_list_wrapper card z-depth-0">
+      <div className="people">
+        <span> People </span>
+      </div>
       <ul>
         { users && users.map(user => {
           // const userImage = user.pictureUrl ? user.pictureUrl : avatar
