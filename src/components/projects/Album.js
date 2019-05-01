@@ -2,30 +2,32 @@ import React from 'react'
 import wall from '../../static/wall.jpg'
 import coffee from '../../static/coffee.jpg'
 import unreal from '../../static/unreal.jpg'
+import cover from '../../static/cover.jpg'
+import photo from '../../static/photo.jpg'
+import sketch from '../../static/sketch.jpg'
+import table from '../../static/table.jpg'
 
 export const Album = () => {
-  const images = [wall, coffee, unreal]
-  var x = 0
-  const handleClick = () => {
+  const images = [wall, coffee, photo, unreal, cover, sketch, photo, table]
 
+  const handleClick = (e) => {
+    // e.target.classList.add('make_large')
   }
 
   return(
-    <div className="carousel_wrapper section">
-      <div className="card">
+    <div className="masonry_wrapper section">
+      <div className="card z-depth-0">
         {images.map((image, index) => {
-          x++
-          const style = x === 0 ? "display: block" : "display: none"
           return (
-            <div
-              className="carousel"
-              onClick={handleClick}
+            <section
+              className="masonry"
               key={index}>
               <img
                 src={image}
                 alt="img"
-                className="responsive-img"/>
-            </div>
+                className="responsive-img"
+                onClick={handleClick}/>
+            </section>
           )
         })}
       </div>

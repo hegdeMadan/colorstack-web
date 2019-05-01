@@ -1,70 +1,97 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect, /*Link*/ } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
-import ProfilePicture from './ProfilePicture'
-import Bio from './TabContents/Bio'
-import Followers from './TabContents/Followers'
-import ArtWork from './TabContents/ArtWorks'
-import Collections from './TabContents/Collections'
+import MobileNavbar from '../layout/MobileNavbar'
+import ProfileNav from './Components/ProfileNav'
+import ProfileContent from './ProfileContent'
+import EditProfile from './Components/EditProfile'
+import Users from '../dashboard/Users'
 
 class Profile extends Component {
   constructor() {
     super()
-    this.state = { }
+    this.mobileNav = React.createRef()
+    this.state = {
+      style: {
+        display: 'none'
+      },
+      peopleStyle: {
+        display: "none"
+      }
+    }
   }
 
-  handleClick = (item) => {
-    this.setState(() => {
-      return {
-        item
-      }
-    })
+  // hide edit profile modal
+  closeModal = () => {
+    this.setState({style:{display: 'none'}})
+  }
+
+  // display edit profile modal
+  displayModal = () => {
+    this.setState({style:{display: 'block'}})
+  }
+
+  displayPeople = () => {
+    // const ref = this.mobileNav.current
+    // const target = ref.nextSibling
+    // console.log(target)
+    if(this.state.peopleStyle.display === "none") {
+      this.setState({peopleStyle:{display:"block"}})
+    } else {
+      this.setState({peopleStyle:{display:"none"}})
+    }
   }
 
   render() {
-    const { auth } = this.props
-    // const { profile } = this.props
-    const { item } = this.state
-    // console.log("par: ", this.props.user)
-    if(!auth.uid) return <Redirect to='/signin' />
-
-    let tab
-    if(item === 'Followers') {
-      tab = <Followers
-      following={this.props.following}
-      followers={this.props.followers}/>
-    } else if(item === 'Art Works') {
-        tab = <ArtWork artWork={this.props.artWorks} />
-    } else if(item === 'Collections') {
-      tab = <Collections collection={this.props.collection} />
-    } else {
-      tab = <Bio />
-    }
+    const { auth, profile, artWorks, users } = this.props
+    const paramId = this.props.match.params.id
 
     return(
-      <div className="profile-wrapper">
-        <div className="row">
-
-          <div className="col l12 m12 s12 profile_picture-container">
-
-            <div>
-              <ProfilePicture
-                onClick={this.handleClick}
-                uid={this.props.auth.uid}
-                urlId={this.props.match.params.id}
-                profile={this.props.profile}/>
-            </div>
-
+      <div>
+        <div
+          className="hide-on-med-and-up mobile_navbar"
+          ref={this.mobileNav}>
+          <MobileNavbar onClick={this.displayPeople} />
+        </div>
+        <div
+          className="mobile_user_wrapper"
+          style={this.state.peopleStyle}>
+          <div className="mobile_user">
+            <Users users={users} />
           </div>
+        </div>
+        <div className="profile-wrapper profile">
+          <div style={this.state.style}>
+            <EditProfile
+            auth={auth}
+            profile={profile}
+            onClick={this.closeModal}/>
+          </div>
+          <div className="picture_basic">
+            <div className="navbar">
+              { auth && profile
+                ? <ProfileNav
+                    auth={auth}
+                    profile={profile} />
+                : null }
+            </div>
+            <div className="container">
+              <div className="row">
 
-          <div className="tab-content-wrapper">
-            <div className="col l12 m12 s12 multi-tab">
-              {tab}
+                <div className="col l12 m12 s12">
+                  <ProfileContent
+                    profile={profile}
+                    auth={auth}
+                    paramId={paramId}
+                    artWorks={artWorks}
+                    onClick={this.displayModal}/>
+                </div>
+
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     )
@@ -72,56 +99,32 @@ class Profile extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('following', state)
   const profileStore = state.firestore.ordered.userProfile
   const profile = profileStore ? profileStore[0] : null
-  // console.log("profile: ", profile)
+  console.log("profile: ", state)
+  // console.log(state)
   return {
     auth: state.firebase.auth,
     profile: profile,
+    users: state.firestore.ordered.users,
     artWorks: state.firestore.ordered.artWork,
-    collection: state.firestore.ordered.collection,
-    following: state.firestore.ordered.following,
-    followers: state.firestore.ordered.followers
   }
 }
 
 export default compose (
   firestoreConnect(props => {
     return [
-      {collection: 'projects',
+      { collection: 'projects',
+        orderBy: ['createdAt', 'desc'],
         where: [
           ['authorId', '==', props.match.params.id]
         ],
-        storeAs: 'artWork',
-        orderedBy: ['createdAt', 'desc']},
+        storeAs: 'artWork'},
 
-      {collection: 'users',
-        doc: props.match.params.id,
-        subcollections: [{
-          collection: 'collection'
-        }],
-        storeAs: 'collection',
-        orderedBy: ['time', 'desc']},
-
-      {collection: 'users',
+      { collection: 'users',
         doc: props.match.params.id,
         storeAs: 'userProfile'},
-
-      {collection: 'users',
-        doc: props.match.params.id,
-        subcollections: [{
-          collection: 'following'
-        }],
-        storeAs: 'following'},
-
-        {collection: 'users',
-          doc: props.match.params.id,
-          subcollections: [{
-            collection: 'followers'
-          }],
-          storeAs: 'followers'
-        }
+      { collection: 'users' }
     ]
   }),
   connect(mapStateToProps)

@@ -1,31 +1,40 @@
 import React from 'react'
-import moment from 'moment'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import NotificationList from './NotificationList'
+import { Link } from 'react-router-dom'
 
 const Notification = ({ notifications }) => {
   return(
-    <div className="section">
-      <div className="notification-card card z-depth-0 show-up">
-        <div className="card-content">
-          <span className="card-title">Notifications</span>
+    <div className="notification-card card z-depth-0 show-up">
+      <span className="go-home">
+        <Link to='/'>
+          <i className="material-icons"> home </i>
+        </Link>
+      </span>
+      <div className="card-content">
+        <span className="card-title">Notifications</span>
           <ul className="notifications">
-            {notifications && notifications.map(item => {
-              return(
-                <li key={item && item.id}>
-                  <span className="green-text">{item && item.user}</span>
-                  <span>{" "+item.content}</span>
-                  <div>
-                    <span className="grey-text lighten-5">
-                      {moment(item.time.toDate()).fromNow()}
-                    </span>
-                  </div>
-                </li>
-              )
-            })}
+            <NotificationList notifications={notifications} />
           </ul>
-        </div>
       </div>
     </div>
   )
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    notifications: state.firestore.ordered.notifications
+  }
+}
+
+export default compose(
+  firestoreConnect([
+    { collection: 'notifications',
+        orderBy: ['time', 'desc']
+      }
+  ]),
+  connect(mapStateToProps)
+)(Notification)

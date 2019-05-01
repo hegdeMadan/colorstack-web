@@ -11,6 +11,7 @@ import Comments from './projectActs/Comments'
 class ProjectSummary extends Component{
   constructor() {
     super()
+    this.linkRef = React.createRef()
     this.state = {
       style: {
         display: 'none'
@@ -19,17 +20,18 @@ class ProjectSummary extends Component{
   }
 
   handleClick = () => {
-    // const link = this.refs.url.value
-    //   console.log(link)
+    // const link = this.refs.link
+    // console.log(link)
+    // // link.focus()
     // link.select()
     // document.execCommand('copy')
-    // alert("link copied")
+    // // alert("link copied")
   }
 
   render() {
     // console.log(window.location.href)
-    const currentUrl = window.location.href
-    const { project, auth, comments } = this.props
+    // const currentUrl = window.location.href
+    const { project, auth, comments } = this.props ? this.props : null // changes done
     const likeCount = project.likeCount ? project.likeCount : 0
     const collected = project.collected ? project.collected : 0
     // console.log(this.props.comments)
@@ -57,10 +59,14 @@ class ProjectSummary extends Component{
               link
              </i>
           </button>
+          {/* .......................copy content is not working yet....................
            <div>
-             <input id="icon_prefix" type="text" ref="url"
-              placeholder={`${currentUrl}projectdetails/${project.id}`} />
-           </div>
+            <input type="text" ref="link" value={`${currentUrl}projectdetails/${project.id}`} />
+             <span
+              className="hide"
+              ref={this.linkRef}> {`${currentUrl}projectdetails/${project.id}`}
+            </span>
+           </div> */}
          </span>
 
       </div>
@@ -82,11 +88,11 @@ class ProjectSummary extends Component{
           comments
           <i className="material-icons">close</i>
         </span>
-
+          <div className="devider"></div>
         {comments && project
           ? <Comments
-            projectId={project.id}
-            comments={comments}/>
+              projectId={project.id}
+              comments={comments}/>
           : null
         }
       </div>

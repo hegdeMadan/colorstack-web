@@ -33,12 +33,12 @@ class PostCerdits extends Component {
 
       return ref.get().then(documentSnapshots => {
         documentSnapshots.forEach(doc => {
-          console.log("dc: ", doc.data())
+          // console.log("dc: ", doc.data())
           obj = {
             ...doc.data(),
             id: doc.id
           }
-          console.log("tst: ", obj)
+          // console.log("tst: ", obj)
         })
       }).then(() => {
         this.setState(() => {
@@ -72,7 +72,10 @@ class PostCerdits extends Component {
                 collection: {
                   docId: this.state.collection.id,
                   imageUrl: this.props.project.imageUrl,
-                  postId: this.props.project.id
+                  postId: this.props.project.id,
+                  authorId: this.props.project.authorId,
+                  authorFirstName: this.props.project.authorFirstName,
+                  authorLastName: this.props.project.authorSecondName
                 }
               }
             }, () => {
@@ -85,7 +88,10 @@ class PostCerdits extends Component {
                 collection: {
                   docId: this.state.collection.id,
                   imageUrl: this.props.project.imageUrl,
-                  postId: this.props.project.id
+                  postId: this.props.project.id,
+                  authorId: this.props.project.authorId,
+                  authorFirstName: this.props.project.authorFirstName,
+                  authorLastName: this.props.project.authorSecondName
                 }
               }
             }, () => {
@@ -97,7 +103,10 @@ class PostCerdits extends Component {
               return {
                 imageUrl: this.props.project.imageUrl,
                 postId: this.props.project.id,
-                collectedCount
+                collectedCount,
+                authorId: this.props.project.authorId,
+                authorFirstName: this.props.project.authorFirstName,
+                authorLastName: this.props.project.authorSecondName
               }
             }, () => {
               this.props.addCollection(this.state)
@@ -122,7 +131,7 @@ class PostCerdits extends Component {
     return ref.get().then((documentSnapshots) => {
       documentSnapshots.forEach(doc => {
         const id = doc.id ? doc.id : null
-        // console.log(`get: ${projectId}`, doc.data())
+        console.log(`like: ${projectId}`, doc.data())
 
         dataObj = {
           ...doc.data(),
@@ -148,7 +157,7 @@ class PostCerdits extends Component {
         this.clickCount = 0;
 
         let likes = this.props.likeCount
-        // console.log(this.state)
+        console.log("like count: ", likes)
         let isExist = this.state && this.state.like && this.state.like.likeFromId ? true : false
         let likeObj = this.state.like
         let isLiked = likeObj && likeObj.isActive ? true : false
@@ -215,7 +224,7 @@ class PostCerdits extends Component {
 
 
   render() {
-    const { likeCount } = this.props
+    // const { likeCount } = this.props
     const { like } = this.state
     const liked = like && like.isActive ? true : false
     // console.log("state: ", this.state)
@@ -230,18 +239,18 @@ class PostCerdits extends Component {
             <button onClick={this.handleLike}>
               {liked
                 ? <i className="material-icons blue-text">thumb_up</i>
-                : <i className="material-icons">thumb_up</i>}
+                : <i className="material-icons before">thumb_up</i>}
             </button>
           </span>
           <span className="">
             <button>
-              <i className="material-icons">send</i>
+              <i className="material-icons before">send</i>
             </button>
           </span>
         </div>
 
         <span className="like_conts_wrapper">
-          {likeCount
+          {/*likeCount
             ?
               <div className="counts">
                 <span className="like-count">
@@ -249,7 +258,7 @@ class PostCerdits extends Component {
                 </span>
               </div>
             : null
-          }
+          */}
         </span>
 
         <div className="save">
@@ -260,7 +269,7 @@ class PostCerdits extends Component {
                      title="add to your collection">
                    collections_bookmark
                  </i>
-                : <i className="material-icons center"
+                : <i className="material-icons center before"
                      title="add to your collection">
                    collections_bookmark
                  </i>}

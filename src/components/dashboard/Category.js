@@ -1,34 +1,52 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 class Category extends Component {
+
   constructor() {
     super()
-    this.state={
-      types: ['Albums']
-    }
+    this.state = {}
   }
 
   render() {
+    const { storeId } = this.props
     return(
       <div className="section">
         <div className="category_cover">
           <ul>
-            {this.state.types.map((item, index) => {
-              return(
-                <div
-                  key={index}
-                  className="category">
-                  <li>
-                    <i className="material-icons">
-                      collections
-                    </i>
-                    <span>
-                      {item}
-                    </span>
-                  </li>
-                </div>
-              )
-            })}
+            <div className="category">
+              <li>
+                <i className="material-icons">
+                  collections
+                </i>
+                <span>
+                  Album
+                </span>
+              </li>
+              { storeId
+                ? <Link to={'/store/' + storeId}>
+                    <li>
+                      <i className="material-icons">
+                        store
+                      </i>
+                      <span>
+                        Store
+                      </span>
+                    </li>
+                  </Link>
+                  : <Link to={'/createtore'}>
+                      <li>
+                        <i className="material-icons">
+                          store
+                        </i>
+                        <span>
+                          Store
+                        </span>
+                      </li>
+                    </Link>
+
+              }
+            </div>
           </ul>
         </div>
       </div>

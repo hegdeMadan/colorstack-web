@@ -1,22 +1,37 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const Tabs = ({item, onClick}) => {
-
-  function handleClick() {
-    onClick(item)
+class Tabs extends Component {
+  constructor() {
+    super()
+    this.state = {
+      tabs: ['Artwork', 'Album', 'Collection', 'Bio']
+    }
   }
 
-  return(
-    <div>
-      <div className="profile-tabs">
+  hancleClick = (tab) => {
+    this.props.onClick(tab)
+  }
+
+  render() {
+    return (
+      <div className="tab_cover">
         <ul>
-          <li onClick={handleClick}>
-            {item}
-          </li>
+          { this.state.tabs.map((tab, index) => {
+            return (
+              <div
+                key={index}
+                className="tabname"
+                onClick={() => this.hancleClick(tab)}>
+                <li>
+                  {tab}
+                </li>
+              </div>
+            )
+          })}
         </ul>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default Tabs

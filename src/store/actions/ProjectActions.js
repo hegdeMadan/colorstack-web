@@ -1,4 +1,5 @@
 export const createProject = (project) => {
+  console.log("content: ", project)
   return (dispatch, getState , { getFirebase, getFirestore }) => {
 
     // adding data to firestore

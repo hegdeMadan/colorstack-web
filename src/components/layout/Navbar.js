@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import SignedInLinks from './SignedInLinks'
 import SignedOutLinks from './SignedOutLinks'
 import { connect } from 'react-redux'
+import logo from '../../static/logo.png'
 
 const Navbar = (props) => {
   const { auth, notifications } = props // destructuring auth from the store
@@ -13,7 +14,7 @@ const Navbar = (props) => {
         <div className="container">
           <Link to='/'
             className="brand-logo hide-on-sm-only black-text">
-              logo
+              <img src={logo} alt="logo" width="56px" height="56px" />
             </Link>
           { displaySignInOrSignOut }
         </div>

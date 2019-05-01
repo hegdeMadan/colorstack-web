@@ -13,6 +13,8 @@ class CreatePost extends Component {
     this.toggleDisplay = React.createRef()
     this.dropUp = React.createRef()
     this.dropDown = React.createRef()
+    this.formRef = React.createRef()
+    // this.fileResetMessage = React.createRef()
       this.state = {
         title: '',
         content: '',
@@ -81,6 +83,7 @@ class CreatePost extends Component {
                 }
               }
             }, () => {
+              console.log("state::: ", this.state)
               this.props.createProject(this.state.toUpload)
               // this.props.history.push('/')
             })
@@ -119,7 +122,7 @@ class CreatePost extends Component {
               }
             }, () => {
               this.props.createAlbum(this.state.album)
-              // this.props.history.push('/')
+              this.props.history.push('/')
             })
           })
         })
@@ -132,6 +135,11 @@ class CreatePost extends Component {
     event.persist()
     const input = event.target
     const files = input.files
+    this.setState(() => {
+      return {
+        imageCount: files.length
+      }
+    })
     console.log(files.length)
     let reader = new FileReader()
     // const imageOriginalName = input.files[0]
@@ -175,6 +183,18 @@ class CreatePost extends Component {
     }
   }
 
+  // clear selected images (only for multiple images)
+  reset = () => {
+    const target = this.formRef.current
+    const input = this.refs.image
+    // console.log("target, before", input.files.length)
+    target.reset()
+    this.setState({imageCount: input.files.length})
+    // const resetMsg = this.fileResetMessage.current
+    this.setState({ResetMessage: "files cleared"})
+    // console.log("target, after", input.files.length)
+  }
+
   handleInputTrigger = () => {
     const ref = this.refs.image
     ref.click()
@@ -198,7 +218,7 @@ class CreatePost extends Component {
     const { preview } = this.state
     if(!auth.uid) return <Redirect to='/signin' /> // redirecting signedOut user to signin page
     return(
-      <div className="section">
+      <div className="section create_post_section">
         <div className="card z-depth-0 show-up post_create_wrapper fix_cont">
           <div className="cp_ttl">
             <span> share your art </span>
@@ -210,12 +230,15 @@ class CreatePost extends Component {
               : null}
           </div>
 
-          <form className="post_create" onSubmit={this.handleSubmit}>
+          <form
+            className="post_create"
+            onSubmit={this.handleSubmit}
+            ref={this.formRef}>
             <div className="thought">
               <div
                 className="edt_wrap editable"
                 contentEditable="true"
-                data-placeholder="write thoughts to your art..."
+                data-placeholder="write thoughts or story to it..."
                 role="textbox"
                 ref={this.contents}
                 onKeyPress={this.handleKeyPress}>
@@ -256,6 +279,22 @@ class CreatePost extends Component {
                 onChange={this.handleFile}
                 multiple />
             </div>
+
+              { this.state && this.state.imageCount === 0
+                ? <div className="reset_message">
+                    {this.state.ResetMessage}
+                  </div>
+                : null }
+            { this.state && this.state.imageCount > 1
+              ? <div className="file_count">
+                  <span> {this.state.imageCount} images selected </span>
+                  <span>
+                    <i
+                      className="material-icons"
+                      onClick={this.reset}> refresh </i>
+                  </span>
+                </div>
+              : null }
             <div
               className="addtoalbum_wrap hide"
               ref={this.toggleDisplay}>
@@ -295,7 +334,7 @@ class CreatePost extends Component {
 
 // retrieving aut uid from firebase to store passing it as props
 const mapStateToProps = (state) => {
-  console.log(state)
+  // console.log(state)
   return {
     auth: state.firebase.auth
   }

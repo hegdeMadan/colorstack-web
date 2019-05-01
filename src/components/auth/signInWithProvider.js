@@ -5,9 +5,9 @@ const SignInWithProvider = (props) => {
   function fireGoogle() {
     props.onClick()
   }
-  function fireFacebook() {
-    // alert("Works")
-  }
+  // function fireFacebook() {
+  // alert("Works")
+  // }
 
   return(
     <div>
@@ -15,20 +15,22 @@ const SignInWithProvider = (props) => {
         <span className="btn z-depth-0 sign-in-btn"
           onClick={fireGoogle}>
           <span>
-            <i class="fab fa-google"></i>
+            <i className="fab fa-google"></i>
           </span>
-          <span>Signin With Google</span>
+          <span onClick={fireGoogle}>Signin With Google</span>
         </span>
       </div>
-      <div className="input-field fb-signin provider_signin">
-        <span className="btn z-depth-0 sign-in-btn"
-          onClick={fireFacebook}>
-          <span>
-            <i class="fab fa-facebook"></i>
+      {/*
+        <div className="input-field fb-signin provider_signin">
+          <span className="btn z-depth-0 sign-in-btn"
+            onClick={fireFacebook}>
+            <span>
+              <i className="fab fa-facebook"></i>
+            </span>
+            <button>Signin With Facebook</button>
           </span>
-          <span>Signin With Facebook</span>
-        </span>
-      </div>
+        </div>
+        */}
     </div>
   )
 }

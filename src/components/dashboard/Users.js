@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { firestoreConnect } from 'react-redux-firebase'
 
 const Users = ({users}) => {
+  console.log("usrs: ", users)
   return(
     <div className="user_list_wrapper card z-depth-0">
       <div className="people">
@@ -18,9 +22,9 @@ const Users = ({users}) => {
               <div className="user_ind">
                 <li>
                   <span className="userimage">
-                    {user.pictureUrl
+                    {user.pictureUrl || user.imageUrl || user.avatarUrl
                       ? <img
-                        src={user.pictureUrl}
+                        src={user.pictureUrl || user.imageUrl || user.avatarUrl}
                         className="circle_img"
                         alt="dp"
                         height="40px"
@@ -29,9 +33,14 @@ const Users = ({users}) => {
                           <i className="material-icons">person</i>
                         </span>}
                   </span>
-                  <span className="username">
-                    {user.firstName + user.lastName}
-                  </span>
+                  <div className="names">
+                    <span className="username">
+                      {`${user.firstName} ${user.lastName}` || user.fullname}
+                    </span>
+                    <span className="uname">
+                      @{user.username}
+                    </span>
+                  </div>
                 </li>
               </div>
             </Link>
@@ -42,4 +51,15 @@ const Users = ({users}) => {
   )
 }
 
-export default Users
+const mapStateToProps = (state) => {
+  return {
+    users: state.firestore.ordered.users
+  }
+}
+
+export default compose(
+  firestoreConnect([
+    {collection:'users'}
+  ]),
+  connect(mapStateToProps)
+)(Users)

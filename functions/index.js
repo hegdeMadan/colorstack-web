@@ -22,7 +22,7 @@ exports.projectCreated = functions.firestore
 
     const projectData = doc.data() // retreiving newly created document's data
     const notificationContent = {
-      content: 'Added a new project',
+      content: 'Added a new post',
       user: `${projectData.authorFirstName} ${projectData.authorSecondName}`,
       time: admin.firestore.FieldValue.serverTimestamp()
     }

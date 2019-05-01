@@ -1,7 +1,7 @@
 import React , { Component } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import unreal from '../../static/unreal.jpg'
+// import unreal from '../../static/unreal.jpg'
 const albums = []
 
 class AddToAlbum extends Component {

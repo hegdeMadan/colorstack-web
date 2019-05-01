@@ -4,6 +4,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
 import Comments from './projectActs/Comments'
+import AddComment from './projectActs/AddComment'
 
 class ProjectDetails extends Component {
   render() {
@@ -21,7 +22,7 @@ class ProjectDetails extends Component {
 
                 <div className="row">
 
-                  <div className="col s12 m8 offset-l2 l8 offset-l2">
+                  <div className="col s12 m8 offset-m2 l8 offset-l2">
                     <div className="card z-depth-0 show-up">
                       <div className="card-content">
                         <span className="card-title"> {project && project.title} </span>
@@ -45,8 +46,11 @@ class ProjectDetails extends Component {
                             .toLocaleDateString('indian',
                             {year: "2-digit", month: "short", day: "numeric"})}
                         </div>
+                        <div className="add-comment">
+                          <AddComment projectId={project.id} />
+                        </div>
                         <div className="comment-details">
-                          <Comments comments={comments} />
+                          <Comments comments={comments} projectId={project.id} />
                         </div>
                       </div>
                     </div>
@@ -84,17 +88,13 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
   firestoreConnect(props => {
     return [
-     {
-       collection: 'projects',
+     { collection: 'projects',
        doc: props.match.params.id
      },
-     {
-       collection: 'projects',
+     { collection: 'projects',
        doc: props.match.params.id,
        subcollections: [
-         {
-           collection: 'comments'
-         }
+         { collection: 'comments' }
        ],
        storeAs: props.match.params.id,
        orderBy: ['commentTime', 'desc']

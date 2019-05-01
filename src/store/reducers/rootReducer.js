@@ -3,8 +3,8 @@ import projectReducer from './projectReducer'
 import profileReducer from './profileReducer'
 import likeReducer from './likeReducer'
 import collectionReducer from './collectionReducer'
-import profilePictureUpload from './profilePictureUpload'
-import followReducer from './profilePictureUpload'
+import profileUpdate from './profileUpdate'
+import followReducer from './FollowReducer'
 import posts from './postRetrieveReducer'
 import { combineReducers } from 'redux'
 import { firestoreReducer } from 'redux-firestore'
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   posts: posts,
   likes: likeReducer,
-  profilePicture: profilePictureUpload,
+  profileUpdate: profileUpdate,
   following: followReducer,
   collection: collectionReducer,
   firestore: firestoreReducer,

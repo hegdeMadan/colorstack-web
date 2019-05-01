@@ -32,6 +32,9 @@ export const signUpAction = (newUser) => {
   return(dispatch, getState, { getFirebase, getFirestore }) => {
     let firebase = getFirebase() // initializing firebase
     let firestore = getFirestore()
+    let email = newUser.email
+    let val = email.split("@")
+    let username = val[0]
 
     // creating new user passing user details
     firebase.auth().createUserWithEmailAndPassword(
@@ -39,9 +42,12 @@ export const signUpAction = (newUser) => {
       newUser.password
     ).then((resp) => {
       firestore.collection('users').doc(resp.user.uid).set({
+        fullName: `${newUser.firstName} ${newUser.lastName}`,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         initials: newUser.firstName[0] + newUser.lastName[0],
+        email: newUser.email,
+        username,
         time: new Date()
       })
     }).then(() => {
@@ -71,32 +77,93 @@ export const recoverPassword = (email) => {
 export const signInWithGoogle = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase()
-    const firestore = getFirestore()
+    // const firestore = getFirestore()
 
     const provider = new firebase.auth.GoogleAuthProvider()
 
     // firebase.auth().signInWithPopup(provider)
     firebase.auth().signInWithRedirect(provider)
+    // .then(user => console.log("what?",user))
+
+    // firebase.auth().getRedirectResult().then((result) => {
+    //   // TODO: check if user has a profile picture already
+    //   // existed and don't put google user profile picture
+    //   // if so
+    //   console.log("result: ", result)
+    //   console.log("email: ", result.email)
+    //
+    //   const user = result.user
+    //   const fullName = user.displayName
+    //   const finalName = fullName.split(" ")
+    //   const firstname = finalName[0]
+    //   const lastname = finalName[1]
+    //   const url = user.photoURL
+    //
+    //   const val = result.email.split("@")
+    //   const username = val[0]
+    //
+    //   firestore.collection('users').doc(user.uid).set({
+    //     fullName: fullName,
+    //     username,
+    //     initials: `${firstname[0]}${lastname[0]}`,
+    //     pictureUrl: url
+    //   })
+    //   .then(() => {
+    //     dispatch({ type: 'SIGNUP_SUCESS' })
+    //     console.log("success adding user!", `${firstname[0]} ${lastname[1]}`)
+    //   }).catch((err) => {
+    //     dispatch({type: 'SIGNUP_ERROR', err })
+    //   })
+    //
+    // }).catch((error) => {
+    //   // Handle Errors here.
+    //   const errorCode = error.code;
+    //   console.log("google errorCode: ", errorCode)
+    //
+    //   const errorMessage = error.message;
+    //   console.log("google err: ", errorMessage)
+    //   // The email of the user's account used.
+    //   const email = error.email;
+    //   console.log("google mail: ", email)
+    //   // The firebase.auth.AuthCredential type that was used.
+    //   const credential = error.credential;
+    //   console.log("google cred: ", credential)
+    // })
+  }
+}
+
+export const addUserAfterGoogleSignIn = () => {
+  console.log("1 fired")
+  return(dispatch, getState, { getFirebase, getFirestore }) => {
+  console.log("2 fired")
+    const firebase = getFirebase()
+    const firestore = getFirestore()
+
     firebase.auth().getRedirectResult().then((result) => {
       // TODO: check if user has a profile picture already
       // existed and don't put google user profile picture
       // if so
+      console.log("result1: ", result.user.email)
+      console.log("result2: ", result.user.displayName)
+      console.log("result3: ", result.user.uid)
+
       const user = result.user
+      const val = user.email.split("@")
+      const username = val[0]
+
       const fullName = user.displayName
       const finalName = fullName.split(" ")
       const firstname = finalName[0]
       const lastname = finalName[1]
-      const url = user.photoURL
 
       firestore.collection('users').doc(user.uid).set({
+        username: username,
         firstName: firstname,
-        lastName: lastname,
-        initials: `${firstname[0]}${lastname[0]}`,
-        pictureUrl: url
-      })
+        lastName: lastname
+      }, {merge: true})
       .then(() => {
         dispatch({ type: 'SIGNUP_SUCESS' })
-        console.log("success adding user!", `${firstname[0]} ${lastname[1]}`)
+        console.log("success adding user!", result.user.displayName)
       }).catch((err) => {
         dispatch({type: 'SIGNUP_ERROR', err })
       })
@@ -114,12 +181,13 @@ export const signInWithGoogle = () => {
       // The firebase.auth.AuthCredential type that was used.
       const credential = error.credential;
       console.log("google cred: ", credential)
-    });
+    })
   }
 }
 
-// export const googleSignIn = () => {
-//   return(dispath, getState, { getFirebase, getFirestore}) => {
-//
-//   }
-// }
+
+export const googleSignIn = () => {
+  return(dispath, getState, { getFirebase, getFirestore}) => {
+
+  }
+}

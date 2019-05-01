@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 // import DropDown from './dropDown'
-import user from '../../static/icons/user.png'
+import user from '../../static/icons/user.svg'
 import { signOutAction } from '../../store/actions/AuthActions'
 // import Notification from '../dashboard/Notification'
 
@@ -16,6 +16,13 @@ const SignedInLinks = (props) => {
   return(
     <div className="nav_logo_cont_wrap">
       <ul className="right nav-links">
+        <li>
+          <NavLink
+            to='/notifications'
+            className="black-text">
+              notification
+          </NavLink>
+        </li>
         <li className="drop_down-btn">
           <NavLink to={'/profile/'+ id}>
             <img

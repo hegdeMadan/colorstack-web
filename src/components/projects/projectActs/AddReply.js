@@ -90,8 +90,6 @@ class AddReply extends Component {
               clear
           </i>
         </div>
-
-        <div className="devider"></div>
       </div>
     )
   }

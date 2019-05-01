@@ -60,9 +60,9 @@ class CommentDetails extends Component {
         <div>
           {comment && comment.id && projectId
             ? <AddReply
-              commentId={comment.id}
-              projectId={projectId}
-              onClick={this.handleClick}/>
+                commentId={comment.id}
+                projectId={projectId}
+                onClick={this.handleClick}/>
             : null}
         </div>
         <div>

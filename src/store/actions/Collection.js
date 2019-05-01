@@ -11,6 +11,9 @@ export const addCollection = (post) => {
       imageUrl: post.imageUrl,
       postId: post.postId,
       isActive: true,
+      authorId: post.authorId,
+      authorFirstName: post.authorFirstName,
+      authorLastName: post.authorLastName,
       time: new Date()
     })
     .then(() => {
@@ -40,6 +43,9 @@ export const disableCollection = (data) => {
         imageUrl: data.imageUrl,
         postId: data.postId,
         isActive: false,
+        authorId: data.authorId,
+        authorFirstName: data.authorFirstName,
+        authorLastName: data.authorLastName,
         time: new Date()
       })
   }
@@ -57,6 +63,9 @@ export const updateCollection = (data) => {
         imageUrl: data.imageUrl,
         postId: data.postId,
         isActive: true,
+        authorId: data.authorId,
+        authorFirstName: data.authorFirstName,
+        authorLastName: data.authorLastName,
         time: new Date()
       })
   }

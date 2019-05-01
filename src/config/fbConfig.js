@@ -4,14 +4,14 @@ import 'firebase/storage'
 import 'firebase/auth'
 
  // Initialize Firebase
-  const config = {
-    apiKey: "AIzaSyBxCqVbDzlntngs45istem-SwrLdnjEDPo",
-    authDomain: "react-redux-blogg.firebaseapp.com",
-    databaseURL: "https://react-redux-blogg.firebaseio.com",
-    projectId: "react-redux-blogg",
-    storageBucket: "react-redux-blogg.appspot.com",
-    messagingSenderId: "644792013213"
-  };
+   const config = {
+    apiKey: "AIzaSyDZix2HpzsVrfT9UhSyzVdMXOwrEO67hDQ",
+    authDomain: "thecolorstack.firebaseapp.com",
+    databaseURL: "https://thecolorstack.firebaseio.com",
+    projectId: "thecolorstack",
+    storageBucket: "thecolorstack.appspot.com",
+    messagingSenderId: "510882193988"
+  }
 
   firebase.initializeApp(config);
   firebase.storage()
