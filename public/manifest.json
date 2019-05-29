@@ -1,4 +1,5 @@
 {
+  "gcm_sender_id": "103953800507",
   "short_name": "ColorStack",
   "name": "ColorStack",
   "icons": [
@@ -25,7 +26,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#4285f4",
-  "background_color": "#4285f4",
-  "gcm_sender_id": "103953800507"
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
 }

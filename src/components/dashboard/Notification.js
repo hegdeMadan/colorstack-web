@@ -2,19 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
-import NotificationList from './NotificationList'
 import { Link } from 'react-router-dom'
+import NotificationList from './NotificationList'
 
-const Notification = ({ notifications }) => {
+const Notification = ({ notifications, auth, profile }) => {
   return(
     <div className="notification-card card z-depth-0 show-up">
-      <span className="go-home">
-        <Link to='/'>
-          <i className="material-icons"> home </i>
-        </Link>
-      </span>
       <div className="card-content">
-        <span className="card-title">Notifications</span>
+        <span className="card-title">
+          <Link to="/">
+            <i className="material-icons"> arrow_back </i>
+          </Link>
+          Notifications
+        </span>
           <ul className="notifications">
             <NotificationList notifications={notifications} />
           </ul>
@@ -24,9 +24,11 @@ const Notification = ({ notifications }) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
+  // console.log(state)
   return {
-    notifications: state.firestore.ordered.notifications
+    notifications: state.firestore.ordered.notifications,
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
   }
 }
 

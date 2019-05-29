@@ -3,9 +3,17 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
+import person from '../../static/icons/person.svg'
 
 const Users = ({users}) => {
-  console.log("usrs: ", users)
+
+  const handleError = (e) => {
+    const targetEl = e.target
+    targetEl.src = person
+    targetEl.classList.add('alt_img')
+  }
+
+  // console.log("usrs: ", users)
   return(
     <div className="user_list_wrapper card z-depth-0">
       <div className="people">
@@ -13,7 +21,8 @@ const Users = ({users}) => {
       </div>
       <ul>
         { users && users.map(user => {
-          // const userImage = user.pictureUrl ? user.pictureUrl : avatar
+
+          const image = user.imageUrl || user.avatarUrl || user.photoUrl
           return (
             <Link
               key={user.id}
@@ -22,20 +31,18 @@ const Users = ({users}) => {
               <div className="user_ind">
                 <li>
                   <span className="userimage">
-                    {user.pictureUrl || user.imageUrl || user.avatarUrl
-                      ? <img
-                        src={user.pictureUrl || user.imageUrl || user.avatarUrl}
-                        className="circle_img"
-                        alt="dp"
-                        height="40px"
-                        width="40px" />
-                      : <span className="avatar">
-                          <i className="material-icons">person</i>
-                        </span>}
+                    <img 
+                      src={`${image}`}
+                      onError={(e) => handleError(e)}
+                      className="circle_img"
+                      alt="dp"
+                      height="40px"
+                      width="40px" />
+
                   </span>
                   <div className="names">
                     <span className="username">
-                      {`${user.firstName} ${user.lastName}` || user.fullname}
+                      {user.fullName}
                     </span>
                     <span className="uname">
                       @{user.username}
@@ -59,7 +66,9 @@ const mapStateToProps = (state) => {
 
 export default compose(
   firestoreConnect([
-    {collection:'users'}
-  ]),
+    {
+      collection:'users',
+      orderBy: ['fullName', 'asc']
+    }]),
   connect(mapStateToProps)
 )(Users)

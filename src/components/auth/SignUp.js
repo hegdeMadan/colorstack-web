@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
-import Navbar from '../layout/Navbar'
 import { signUpAction } from '../../store/actions/AuthActions'
+// import logo from '../../static/logohome.png'
+import Intro from '../layout/Intro'
+import { CircularLoader } from '../../loaders/circular'
 
 class SignUp extends Component {
   // initializing state
@@ -10,22 +12,38 @@ class SignUp extends Component {
     firstName: '',
     lastName: '',
     email: '',
-    password:''
+    password:'',
+    isLoading: false
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.setState(() => {
-      return {
-        firstName: this.refs.firstName.value,
-        lastName: this.refs.lastName.value,
-        email: this.refs.email.value,
-        password: this.refs.password.value
-      }
-    }, () => {
-      console.log(this.state)
-      this.props.signUp(this.state)
-    })
+    const fullname = this.refs.fullname.value
+    // const nameArr = fullname.split(" ")
+    // const firstName = nameArr[0]
+    // const lastName = nameArr[1]
+
+    if(fullname) {
+      this.setState({isLoading: true })
+
+      this.setState(() => {
+        return {
+          fullName: fullname,
+          email: this.refs.email.value,
+          password: this.refs.password.value
+        }
+      }, () => {
+        // console.log(this.state)
+        this.props.signUp(this.state)
+      })    
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.err!==this.props.err){
+
+      this.setState({isLoading: false })
+    }
   }
 
   render() {
@@ -36,38 +54,44 @@ class SignUp extends Component {
 
     return(
       <div>
-        <div>
-          <Navbar />
-        </div>
         <div className="full-cover">
-          <div className="container">
-            <div className="row">
-              <div className="col l6 offset-l3 m6 offset-m3 s10 offset-s1">
-                <div className="sign_up_in-title">
-                  <span className=""> Sign Up </span>
-                </div>
+          <Intro />
+
+            <div className="sign_in-form">
+              <div className="form-cover">
                 <form className="sign-up sign-in" onSubmit={this.handleSubmit}>
+
                   <div className="input-field">
-                    <input id="first_name" type="text" ref="firstName" />
-                    <label htmlFor="first_name">First Name</label>
+                    <label htmlFor="full_name">Full Name</label>
+                    <div>
+                      <i className="material-icons prefix"> person </i>
+                      <input id="full_name" type="text" ref="fullname" required />
+                    </div>
                   </div>
                   <div className="input-field">
-                    <input id="last_name" type="text" ref="lastName" />
-                    <label htmlFor="last_name">Last Name</label>
-                  </div>
-                  <div className="input-field">
-                    <input id="email" type="email" ref="email" />
                     <label htmlFor="email">Email</label>
+                    <div>
+                      <i className="material-icons prefix"> email </i>
+                      <input id="email" type="email" ref="email" required />
+                    </div>
                   </div>
                   <div className="input-field">
-                    <input id="password" type="password" ref="password" />
                     <label htmlFor="password">Password</label>
+                    <div>
+                      <i className="material-icons prefix"> lock </i>
+                      <input id="password" type="password" ref="password" required />
+                    </div>
                   </div>
                   <div className="input-field signup_btn_link">
-                    <button className="btn black z-depth-0 sign-in-btn">Sign Up</button>
+                  { this.state.isLoading
+                        ? <div className="cLoader"> <CircularLoader /> </div>
+                        : <button
+                              className="sign-in-btn">
+                                Sign Up
+                          </button> }
                     <span>
                       Have an account?
-                      <Link to='signin' className="green-text">
+                      <Link to='signin'>
                         &nbsp; Sign In
                       </Link>
                     </span>
@@ -78,7 +102,7 @@ class SignUp extends Component {
                 </form>
               </div>
             </div>
-          </div>
+
         </div>
       </div>
     )

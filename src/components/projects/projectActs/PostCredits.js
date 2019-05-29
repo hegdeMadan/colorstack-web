@@ -74,8 +74,7 @@ class PostCerdits extends Component {
                   imageUrl: this.props.project.imageUrl,
                   postId: this.props.project.id,
                   authorId: this.props.project.authorId,
-                  authorFirstName: this.props.project.authorFirstName,
-                  authorLastName: this.props.project.authorSecondName
+                  authorName: this.props.project.authorName,
                 }
               }
             }, () => {
@@ -90,9 +89,7 @@ class PostCerdits extends Component {
                   imageUrl: this.props.project.imageUrl,
                   postId: this.props.project.id,
                   authorId: this.props.project.authorId,
-                  authorFirstName: this.props.project.authorFirstName,
-                  authorLastName: this.props.project.authorSecondName
-                }
+                  authorName: this.props.project.authorName,                }
               }
             }, () => {
               this.props.updateCollection(this.state.collection)
@@ -105,8 +102,7 @@ class PostCerdits extends Component {
                 postId: this.props.project.id,
                 collectedCount,
                 authorId: this.props.project.authorId,
-                authorFirstName: this.props.project.authorFirstName,
-                authorLastName: this.props.project.authorSecondName
+                authorName: this.props.project.authorName,
               }
             }, () => {
               this.props.addCollection(this.state)
@@ -243,8 +239,19 @@ class PostCerdits extends Component {
             </button>
           </span>
           <span className="">
-            <button>
+            {/* <button>
               <i className="material-icons before">send</i>
+            </button> */}
+            <button onClick={this.addCollection}>
+              {isCollected
+                ? <i className="material-icons center blue-text darken-4"
+                     title="add to your collection">
+                   collections_bookmark
+                 </i>
+                : <i className="material-icons center before"
+                     title="add to your collection">
+                   collections_bookmark
+                 </i>}
             </button>
           </span>
         </div>
@@ -261,7 +268,7 @@ class PostCerdits extends Component {
           */}
         </span>
 
-        <div className="save">
+        {/* <div className="save">
           <span className="">
             <button onClick={this.addCollection}>
               {isCollected
@@ -275,7 +282,7 @@ class PostCerdits extends Component {
                  </i>}
             </button>
           </span>
-        </div>
+        </div> */}
 
       </div>
     )

@@ -23,7 +23,7 @@ class CommentDetails extends Component {
 
       return ref.get().then(documentSnapshots => {
         documentSnapshots.forEach(doc => {
-          console.log("data:", doc.data())
+          // console.log("data:", doc.data())
           let obj = {
             ...doc.data(),
             id: doc.id

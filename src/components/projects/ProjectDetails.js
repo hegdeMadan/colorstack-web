@@ -19,11 +19,15 @@ class ProjectDetails extends Component {
             return (
               <div className="container section project-details"
                 key={project.id}>
-
+                  <div className="hide-on-med-and-up go_home"> 
+                    <Link to='/'>
+                      <i className="material-icons"> arrow_back </i>
+                    </Link>
+                  </div>
                 <div className="row">
 
                   <div className="col s12 m8 offset-m2 l8 offset-l2">
-                    <div className="card z-depth-0 show-up">
+                    <div className="card z-depth-0">
                       <div className="card-content">
                         <span className="card-title"> {project && project.title} </span>
                         <div className="card-image">

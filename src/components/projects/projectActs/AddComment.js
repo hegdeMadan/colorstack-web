@@ -15,7 +15,7 @@ class AddComment extends Component {
     event.preventDefault()
     event.persist()
     let comment = this.refs.comment.value
-    console.log("id::: ",this.props.projectId)
+    // console.log("id::: ",this.props.projectId)
     let { projectId } = this.props
     if(comment) {
       this.setState(() => {
@@ -31,8 +31,8 @@ class AddComment extends Component {
   }
 
   render() {
-    const projectId = this.props && this.props.projectId
-    console.log("1id: ", projectId)
+    // const projectId = this.props && this.props.projectId
+    // console.log("1id: ", projectId)
     return(
       <div className="addcomment">
         <form action="" onSubmit={this.handleSubmit}>

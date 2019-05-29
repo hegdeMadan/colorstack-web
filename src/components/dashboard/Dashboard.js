@@ -6,15 +6,15 @@ import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { Redirect } from 'react-router-dom'
 // import { addUserAfterGoogleSignIn } from '../../store/actions/AuthActions'
-// import Notification from './Notification'
+import Notification from './Notification'
 import Navbar from '../layout/Navbar'
 import MobileNavbar from '../layout/MobileNavbar'
 import ProjectList from '../projects/ProjectList'
 // import { Album } from '../projects/Album'
 // import Footer from './Footer'
-import Spinner from './Spinner'
+// import Spinner from '../../loaders/Spinner'
 import CreatePost from '../projects/CreatePost'
-import Category from './Category'
+// import Category from './Category'
 import Users from './Users'
 // import Intro from '../layout/Intro'
 
@@ -25,6 +25,7 @@ class Dashboard extends Component {
     this.users = []
     this.lastVisible = ''
     this.followers = []
+    this.notificationPanel = React.createRef()
     this.state = {
       isAlbumSelected: false,
       isLoading: true,
@@ -40,32 +41,30 @@ class Dashboard extends Component {
   // TODO: set data to local storage once component
   // successfully mounted
 
-  componentDidMount() {
+  componentDidMount(props) {
     // addUserAfterGoogleSignIn()
     this.getPosts()
-    this.getStoreId()
+    // props && this.getStoreId()
     // this.getUsers()
   }
 
-  getStoreId = () => {
-    const db = firebase.firestore()
-    const userId = this.props && this.props.auth.uid
-    
-    return db.collection('stores')
-      .where("ownerId", "==", userId )
-      .get()
-      .then(documentSnapshot => {
-        documentSnapshot.forEach(doc => {
-          this.setState(() => {
-            return {
-              storeId: doc.id
-            }
-          }, () => {
-            console.log('state', this.state)
-          })
-        })
-      })
-  }
+  // getStoreId = () => {
+  //   const db = firebase.firestore()
+  //   const userId = this.props && this.props.auth.uid
+
+  //   return db.collection('stores')
+  //     .where("ownerId", "==", userId )
+  //     .get()
+  //     .then(documentSnapshot => {
+  //       documentSnapshot.forEach(doc => {
+  //         this.setState(() => {
+  //           return {
+  //             storeId: doc.id
+  //           }
+  //         })
+  //       })
+  //     })
+  // }
 
   // getUsers = () => {
   //   const db = firebase.firestore()
@@ -121,6 +120,8 @@ class Dashboard extends Component {
 
   getPosts = () => {
     const uid = this.props.auth.uid
+    // console.log(uid);
+    
     if(uid) {
 
       const db = firebase.firestore()
@@ -163,75 +164,89 @@ class Dashboard extends Component {
     }
   }
 
+  closeNotificationPanel = () => {
+    const ref = this.notificationPanel.current
+    ref.classList.add('hide')
+  }
+
+  displayNotificationPanel = () => {
+    const ref = this.notificationPanel.current
+    ref.classList.remove('hide')
+  }
+
   render() {
-  // console.log("project: ", this.state)
-    // console.log("st: ", this.state)
+
     const { auth, profile } = this.props
-    const { posts, isLoading } = this.state
+    const { posts } = this.state
     const { storeId } = this.state
-    if (!auth.uid) return <Redirect to='/signin' /> // redirecting signed out users to signin/signup page
-    // if(this.state.isAlbumSelected)
-    if(isLoading) {
-      return(
-        <div className="spinner_wrapper">
-          <Spinner />
+
+    // redirecting signed out users to signin/signup page
+    if (!auth.uid) return <Redirect to='/signin' />
+
+    return(
+      <div>
+        <div ref={this.notificationPanel} 
+          className="desk_notification_wrapper hide hide-on-small-only">
+          <div className="desk_notification">
+            <i onClick={this.closeNotificationPanel}
+              className="material-icons close"> 
+                close 
+            </i>
+            <Notification />
+          </div>
         </div>
-      )
-    } else {
-      return(
-        <div>
-          <div className="navbar_wrapper">
-            <Navbar />
-          </div>
-          <div
-            className="hide-on-med-and-up mobile_navbar"
-            ref={this.mobileNav}>
-            <MobileNavbar profile={profile} auth={auth} storeId={storeId} />
-          </div>
-          
-          <div className="dashboard container">
-            <div className="row">
-              <div className="col l1 m1 hide-on-small-only hide-993">
-                <Category auth={auth} profile={profile} storeId={storeId} />
-              </div>
-              <div className="col l5 offset-l1 m8 offset-m2 s12">
-                <div className="hide-on-large-only">
-                  <CreatePost />
-                </div>
-                {/*<div>
-                  <Album />
-                </div>*/}
+        <div className="navbar_wrapper">
+          <Navbar onClick={this.displayNotificationPanel} />
+        </div>
+        <div
+          className="hide-on-med-and-up mobile_navbar"
+          ref={this.mobileNav}>
+          <MobileNavbar profile={profile} auth={auth} storeId={storeId} />
+        </div>
 
-                    <div>
-                      <ProjectList projects={posts} auth={auth}/>
-                      <div
-                        className="load_more"
-                        onClick={this.renewPost}>
-                        <span>
-                          Load More
-                          <i className="material-icons">autorenew</i>
-                        </span>
-                      </div>
-                    </div>
-
-
-              </div>
-              <div className="col l4 offset-l1 hide-on-med-and-down">
-                  {/*<Notification notifications={notifications} />*/}
+        <div className="dashboard container">
+          <div className="row">
+            {/* <div className="col l1 m1 hide-on-small-only hide-993">
+              <Category auth={auth} profile={profile} storeId={storeId} />
+            </div> */}
+            <div className="col l5 offset-l1 m8 offset-m2 s12">
+              <div className="hide-on-large-only">
+              {/* <a href="whatsapp://send?text=The text to share!" data-action="share/whatsapp/share">Share via Whatsapp</a> */}
                 <CreatePost />
-                {this.users
-                  ? <div>
-                      <Users />
-                    </div>
-                  : null}
               </div>
+              {/*<div>
+                <Album />
+              </div>*/}
+
+                  <div className="">
+                    <ProjectList projects={posts} auth={auth}/>
+                    <div
+                      className="load_more"
+                      onClick={this.renewPost}>
+                      <span>
+                        Load More
+                        <i className="material-icons">autorenew</i>
+                      </span>
+                    </div>
+                  </div>
+
+
             </div>
-            <div className="footer-cover">
+            <div className="col l4 offset-l1 hide-on-med-and-down">
+              <CreatePost />
+              {this.users
+                ? <div>
+                    <Users />
+                  </div>
+                : null}
             </div>
           </div>
+          <div className="footer-cover">
+          </div>
         </div>
-      )
-    }
+      </div>
+    )
+    
   }
 }
 

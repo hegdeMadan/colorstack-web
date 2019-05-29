@@ -42,10 +42,7 @@ export const signUpAction = (newUser) => {
       newUser.password
     ).then((resp) => {
       firestore.collection('users').doc(resp.user.uid).set({
-        fullName: `${newUser.firstName} ${newUser.lastName}`,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        initials: newUser.firstName[0] + newUser.lastName[0],
+        fullName: newUser.fullName,
         email: newUser.email,
         username,
         time: new Date()
@@ -66,10 +63,10 @@ export const recoverPassword = (email) => {
 
     auth.sendPasswordResetEmail(emailId)
     .then(() => {
-      console.log("link has been sent")
+      dispatch({ type:'RESET_LINK_SENT', email })
     })
     .catch((error) => {
-      console.log("error", error)
+      dispatch({ type:'RESET_LINK_ERROR', error })      
     })
   }
 }
@@ -133,9 +130,9 @@ export const signInWithGoogle = () => {
 }
 
 export const addUserAfterGoogleSignIn = () => {
-  console.log("1 fired")
+  // console.log("1 fired")
   return(dispatch, getState, { getFirebase, getFirestore }) => {
-  console.log("2 fired")
+  // console.log("2 fired")
     const firebase = getFirebase()
     const firestore = getFirestore()
 
@@ -143,23 +140,19 @@ export const addUserAfterGoogleSignIn = () => {
       // TODO: check if user has a profile picture already
       // existed and don't put google user profile picture
       // if so
-      console.log("result1: ", result.user.email)
-      console.log("result2: ", result.user.displayName)
-      console.log("result3: ", result.user.uid)
+      // console.log("result1: ", result.user.email)
+      // console.log("result2: ", result.user.displayName)
+      // console.log("result3: ", result.user.uid)
 
       const user = result.user
       const val = user.email.split("@")
       const username = val[0]
 
       const fullName = user.displayName
-      const finalName = fullName.split(" ")
-      const firstname = finalName[0]
-      const lastname = finalName[1]
 
       firestore.collection('users').doc(user.uid).set({
         username: username,
-        firstName: firstname,
-        lastName: lastname
+        fullName
       }, {merge: true})
       .then(() => {
         dispatch({ type: 'SIGNUP_SUCESS' })
@@ -186,8 +179,8 @@ export const addUserAfterGoogleSignIn = () => {
 }
 
 
-export const googleSignIn = () => {
-  return(dispath, getState, { getFirebase, getFirestore}) => {
+// export const googleSignIn = () => {
+//   return(dispath, getState, { getFirebase, getFirestore}) => {
 
-  }
-}
+//   }
+// }

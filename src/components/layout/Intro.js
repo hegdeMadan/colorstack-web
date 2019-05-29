@@ -6,7 +6,7 @@ const Intro = () => {
     <div className="intro_cover">
       <div className="intro_logo_wrapper">
         <div className="intro_logo">
-          <img src={logo} alt="logo" width="280px" height="80px" />
+          <img src={logo} alt="logo" width="240px" height="100px" />
         </div>
       </div>
     </div>

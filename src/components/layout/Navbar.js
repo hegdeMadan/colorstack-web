@@ -6,8 +6,17 @@ import { connect } from 'react-redux'
 import logo from '../../static/logo.png'
 
 const Navbar = (props) => {
-  const { auth, notifications } = props // destructuring auth from the store
-  const displaySignInOrSignOut = auth.uid ? <SignedInLinks notifications={notifications}/> : <SignedOutLinks />
+
+  const propFunc = props.onClick
+  const notify = (props) => {
+    console.log("props", propFunc)
+    propFunc()
+  }
+
+  const { auth } = props // destructuring auth from the store
+
+  // console.log("this: ", props)
+  
   return(
     <div className="navbar-fixed">
       <nav className="nav-wrapper z-depth-0">
@@ -16,7 +25,9 @@ const Navbar = (props) => {
             className="brand-logo hide-on-sm-only black-text">
               <img src={logo} alt="logo" width="56px" height="56px" />
             </Link>
-          { displaySignInOrSignOut }
+          { auth.uid 
+            ? <SignedInLinks onClick={() => notify()} text="name" /> 
+            : <SignedOutLinks /> }
         </div>
       </nav>
     </div>

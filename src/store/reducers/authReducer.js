@@ -34,6 +34,19 @@ const authReducer = (state = initState, action) => {
         ...state,
         authStatus: action.err.message
       }
+    case 'RESET_LINK_SENT':
+      return {
+        ...state,
+        isSuccessful: true,
+        message: "Password rest link has been sent!"
+      }
+    case 'RESET_LINK_ERROR':
+      return {
+        ...state,
+        isSuccessful: false,
+        message: "This email is not registered with us!",
+        errorMessage: action.error 
+      }
     default:
       return state
   }

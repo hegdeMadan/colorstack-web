@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
+import { deletePost } from '../../store/actions/ProjectActions'
+
 import AddComment from './projectActs/AddComment'
 import PostCredits from './projectActs/PostCredits'
 import Comments from './projectActs/Comments'
 // import FixedCategories from './Categories'
+import { ShowImage } from './ShowImage'
 
 class ProjectSummary extends Component{
   constructor() {
@@ -19,13 +22,8 @@ class ProjectSummary extends Component{
     }
   }
 
-  handleClick = () => {
-    // const link = this.refs.link
-    // console.log(link)
-    // // link.focus()
-    // link.select()
-    // document.execCommand('copy')
-    // // alert("link copied")
+  removePost = (docId) => {
+    this.props.deletePost(docId)
   }
 
   render() {
@@ -36,43 +34,51 @@ class ProjectSummary extends Component{
     const collected = project.collected ? project.collected : 0
     // console.log(this.props.comments)
 
+    const name = project && project.authorName
+    const nameArr = name.split(' ')
+    
+    let initials = ''
+    if(nameArr && (nameArr[1] !== undefined)) {
+      initials = `${nameArr[0][0]}${nameArr[1][0]}`
+    } else if(nameArr && (nameArr[1] === undefined)) {
+      initials = `${nameArr[0][0]}${nameArr[0][1]}`
+    }
+
   return(
     <div className="card z-depth-0 project-summary show-up post">
-
+      {/* <div className="expand_img">
+        <ShowImage />
+      </div> */}
       <div className="name">
         <Link to={'/profile/' + project.authorId} className="black-text">
           <div className="btn z-depth-0 user-indicator">
             <span>
-              {project.authorFirstName && project.authorFirstName[0]}
-              {project.authorSecondName && project.authorSecondName[0]}
+              {initials}
             </span>
           </div>
           <span className="user_name">
-            {project.authorFirstName} {project.authorSecondName}
+            {project.authorName}
           </span>
         </Link>
 
-          <span className="right options">
-           <button className="btn z-depth-0 transparent"
-            onClick={this.handleClick}>
-             <i className="material-icons">
-              link
-             </i>
-          </button>
-          {/* .......................copy content is not working yet....................
-           <div>
-            <input type="text" ref="link" value={`${currentUrl}projectdetails/${project.id}`} />
-             <span
-              className="hide"
-              ref={this.linkRef}> {`${currentUrl}projectdetails/${project.id}`}
-            </span>
-           </div> */}
-         </span>
+          { project.authorId === auth.uid
+            ? <span className="right options">
+                <button className="btn z-depth-0 transparent"
+                  onClick={() => this.removePost(project.id)}>
+                  <i className="material-icons">
+                    delete
+                  </i>
+                </button>
+              </span>
+            : null }
 
       </div>
 
       <div className="card-image post_image">
-        <img src={project.imageUrl} alt="art" />
+        { project && project.imageUrl
+          ? <img src={project.imageUrl} alt="art" />
+          : <div className="pre_image_loader"> </div>
+        }
         <div className="postcredits_wrap">
           <PostCredits
             project={project}
@@ -119,6 +125,12 @@ class ProjectSummary extends Component{
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deletePost: (docId) => dispatch(deletePost(docId)) 
+  }
+}
+
 const mapStateToProps = (state, ownProps) => {
 //  console.log("proSum: ", state)
   const id = ownProps.project.id
@@ -146,7 +158,7 @@ export default compose (
       }
     ]
   }),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(ProjectSummary)
 
 // export default ProjectSummary

@@ -11,11 +11,14 @@ const Preview = ({preview}) => {
       { preview.map((image, index) => {
         console.log("map: ", image)
         return(
-          <div className="preview" key="index">
-            <img
+          <div 
+            className="preview" 
+            key="index"
+            style={{ backgroundImage: `url(${image.url})` }}>
+            {/* <img
               className="responsive-img"
               src={image.url}
-              alt="img"/>
+              alt="img"/> */}
           </div>
         )
       })}

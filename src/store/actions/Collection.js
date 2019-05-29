@@ -12,8 +12,7 @@ export const addCollection = (post) => {
       postId: post.postId,
       isActive: true,
       authorId: post.authorId,
-      authorFirstName: post.authorFirstName,
-      authorLastName: post.authorLastName,
+      authorName: post.authorName,
       time: new Date()
     })
     .then(() => {
@@ -44,8 +43,7 @@ export const disableCollection = (data) => {
         postId: data.postId,
         isActive: false,
         authorId: data.authorId,
-        authorFirstName: data.authorFirstName,
-        authorLastName: data.authorLastName,
+        authorName: data.authorName,
         time: new Date()
       })
   }
@@ -64,8 +62,7 @@ export const updateCollection = (data) => {
         postId: data.postId,
         isActive: true,
         authorId: data.authorId,
-        authorFirstName: data.authorFirstName,
-        authorLastName: data.authorLastName,
+        authorName: data.authorName,
         time: new Date()
       })
   }

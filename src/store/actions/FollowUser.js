@@ -21,7 +21,7 @@ export const FollowUser = (followingDetails) => {
         firestore.collection('users').doc(followingDetails.userid)
         .collection('followers')
         .add({
-          name: `${profile.firstName} ${profile.lastName}`,
+          name: `${profile.fullName}`,
           userid: userId,
           time: new Date()
         })

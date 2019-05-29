@@ -8,7 +8,7 @@ export const createStore = (store) => {
         firestore.collection('stores')
         .add({
             ...store,
-            ownerId
+            ownerId: ownerId.uid
         })
         .then(_ => {
             window.location.href="/"

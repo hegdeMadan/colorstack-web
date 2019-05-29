@@ -11,8 +11,9 @@ export const createComment = (comment) => {
     .add({
       ...comment,
       commentFromId: userId,
-      commentFrom: `${profile.firstName} ${profile.lastName}`,
-      commentTime: new Date()
+      commentFrom: `${profile.fullName}`,
+      commentTime: new Date(),
+      isActive: true
     })
     .then(() => {
       dispatch({type: 'CREATE_COMMENT', comment})
@@ -39,9 +40,9 @@ export const commentReply = (data) => {
     .add({
       replyContent: data.replyContent,
       replyFromId: userId,
-      replyFrom: `${profile.firstName} ${profile.lastName}`,
+      replyFrom: `${profile.fullName}`,
       time: new Date(),
-      isHidden: false
+      isActive: true
     })
   }
 }

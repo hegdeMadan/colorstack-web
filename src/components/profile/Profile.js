@@ -53,7 +53,7 @@ class Profile extends Component {
         <div
           className="hide-on-med-and-up mobile_navbar"
           ref={this.mobileNav}>
-          <MobileNavbar onClick={this.displayPeople} />
+          <MobileNavbar auth={auth} onClick={this.displayPeople} />
         </div>
         <div
           className="mobile_user_wrapper"
@@ -101,7 +101,7 @@ class Profile extends Component {
 const mapStateToProps = (state, ownProps) => {
   const profileStore = state.firestore.ordered.userProfile
   const profile = profileStore ? profileStore[0] : null
-  console.log("profile: ", state)
+  // console.log("profile: ", state)
   // console.log(state)
   return {
     auth: state.firebase.auth,

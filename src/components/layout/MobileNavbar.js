@@ -6,9 +6,9 @@ const MobileNavbar = (props) => {
   // const displayPeople = () => {
   //   props.onClick()
   // }
-  const { profile, storeId} = props
-  const userImage = profile && (profile.avatarUrl || profile.imageUrl || profile.photoUrl) ? (profile.avatarUrl || profile.imageUrl || profile.photoUrl) : null
-  const id = props.auth.uid
+  const { profile, auth} = props
+  const userImage = profile && ( profile.imageUrl || profile.avatarUrl) ? ( profile.imageUrl || profile.avatarUrl) : null
+  const id = auth.uid
   return (
     <div className="mobile_nav_wrapper">
 
@@ -27,6 +27,27 @@ const MobileNavbar = (props) => {
               </i>
             </Link>
           </li>
+          {/* <li>
+            { storeId
+              ? <Link to={'/store/' + storeId}>
+              <i className="material-icons">
+              store
+                  </i>
+                </Link>
+                : <Link to={'/createtore'}>
+                <i className="material-icons">
+                store
+                  </i>
+                  </Link>  
+                }
+          </li> */}
+          <li>
+            <Link to={'/notifications'}>
+              <i className="material-icons">
+                flash_on
+              </i>
+            </Link>
+          </li>
           <li className="user_ic">
             <Link to={'/profile/' + id}>
               { userImage !== null
@@ -39,27 +60,6 @@ const MobileNavbar = (props) => {
                 : <i className="material-icons">
                     person
                   </i> }
-            </Link>
-          </li>
-          <li>
-            { storeId
-              ? <Link to={'/store/' + storeId}>
-                  <i className="material-icons">
-                    store
-                  </i>
-                </Link>
-              : <Link to={'/createtore'}>
-                  <i className="material-icons">
-                    store
-                  </i>
-                </Link>  
-            }
-          </li>
-          <li>
-            <Link to={'/notifications'}>
-              <i className="material-icons">
-                flash_on
-              </i>
             </Link>
           </li>
         </ul>

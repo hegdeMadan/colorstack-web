@@ -8,10 +8,10 @@ class ForgotPassword extends Component {
     this.state = {}
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e,) => {
     e.preventDefault()
     const email = this.refs.email.value
-    console.log("email: ", email)
+    // console.log("email: ", email)
     this.setState(() => {
       return{
         email: email
@@ -22,20 +22,45 @@ class ForgotPassword extends Component {
   }
 
   render() {
+    const auth = this.props && this.props.authStatus
     return(
-      <div className="container email" onSubmit={this.handleSubmit}>
+      <div className="container email password_recovery">
         <div className="row">
-          <form className="col l6 offset-l3 white">
-            <label htmlFor="email"> Enter your Email to recover password </label>
-            <input ref="email" id="email" type="email" placeholder="Email" />
-            <span className="green-text">
+          <form
+            onSubmit={this.handleSubmit} 
+            className="col l6 offset-l3 white">
+            <div className="input-field">
+              <label htmlFor="email"> Enter your Email to recover password </label>
+              <input ref="email" id="email" type="email" placeholder="Email" />
+            </div>
+            <p className="grey-text lignten-5">
               Password recovery link will be sent to your email-id
-            </span>
-            <button className="btn z-depth-0 black"> Verify </button>
+            </p>
+            {
+              auth && auth.isSuccessful
+              ? <div className="green-text">
+                  {auth && auth.message}
+                </div>
+              : <div className="red-text">
+                  {auth && auth.message}
+                </div>
+            }
+            <button
+              type="submit" 
+              className="btn z-depth-0">
+                Verify
+              </button>
           </form>
         </div>
       </div>
     )
+  }
+}
+
+const mapStateToProps = (state) => {
+  // console.log(state)
+  return {
+    authStatus: state.auth
   }
 }
 
@@ -45,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(ForgotPassword)
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

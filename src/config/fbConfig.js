@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage'
 import 'firebase/auth'
+// import 'firebase/messaging'
 
  // Initialize Firebase
    const config = {
@@ -16,4 +17,19 @@ import 'firebase/auth'
   firebase.initializeApp(config);
   firebase.storage()
   firebase.firestore()
-export default firebase
+  // firebase.firestore().settings({ timestampsInSnapshots: true })
+  // const messaging = firebase.messaging()
+
+  // Notification.requestPermission()
+  //   .then(_ => {
+  //     console.log("got permission")
+  //     return messaging.getToken()
+  //   })
+  //   .then(token => {
+  //     console.log(token)
+  //   })
+  //   .catch(error => {
+  //     console.log("didn't get permission", error)
+  //   })
+
+  export default firebase

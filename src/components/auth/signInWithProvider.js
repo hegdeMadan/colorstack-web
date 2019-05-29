@@ -1,8 +1,12 @@
 import React from 'react'
+import google from '../../static/icons/google.png'
+// import { CircularLoader } from '../../loaders/circular'
+// let isLoading = false
 
 const SignInWithProvider = (props) => {
 
   function fireGoogle() {
+    // isLoading = true
     props.onClick()
   }
   // function fireFacebook() {
@@ -12,13 +16,22 @@ const SignInWithProvider = (props) => {
   return(
     <div>
       <div className="input-field g-signin provider_signin">
-        <span className="btn z-depth-0 sign-in-btn"
-          onClick={fireGoogle}>
-          <span>
-            <i className="fab fa-google"></i>
-          </span>
-          <span onClick={fireGoogle}>Signin With Google</span>
-        </span>
+        {/* { isLoading
+          ? <div className="cLoader"> <CircularLoader /> </div>
+          : <div className="btn white darken-4 black-text google-btn"
+              onClick={fireGoogle}>
+              <div className="left">
+                <img src={google} alt="google" width="32px" height="32px" />
+              </div>
+              Google
+            </div> } */}
+          <div className="btn white darken-4 black-text google-btn"
+                onClick={() => fireGoogle()}>
+                <div className="left">
+                  <img src={google} alt="google" width="32px" height="32px" />
+                </div>
+              Google
+          </div>
       </div>
       {/*
         <div className="input-field fb-signin provider_signin">

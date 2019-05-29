@@ -3,15 +3,17 @@
   <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="%PUBLIC_URL%/logo.png" size="192x192">
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="/css/materialize/css/materialize.min.css" media="screen, projection" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified CSS, materialize-->
+    <link type="text/css" rel="stylesheet" href="/styles/materialize.css"  media="screen,projection"/>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
     <!--Import Google Icon Font-->
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -43,27 +45,8 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <!-- Compiled and minified JavaScript -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script type="text/javascript">
-
-      // function resizeGridItem(item){
-      //   grid = document.getElementsByClassName("masonry-wrapper")[0];
-      //   rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
-      //   rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
-      //   rowSpan = Math.ceil((item.querySelector('.column').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
-      //   item.style.gridRowEnd = "span "+rowSpan;
-      // }
-      //
-      // function resizeAllGridItems(){
-      //   allItems = document.getElementsByClassName("column");
-      //   for(x=0;x<allItems.length;x++){
-      //   resizeGridItem(allItems[x]);
-      //   }
-      // }
-      //
-      // window.onload = resizeAllGridItems();
-
-
-    </script>
+    <!-- <script type="text/javascript" src="/script/materialize.min.js"></script> -->
   </body>
 </html>

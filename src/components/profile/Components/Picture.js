@@ -5,6 +5,7 @@ const Picture = ({profile, onClick, paramId, auth}) => {
 
   const handleClick = () => {
     onClick()
+    document.getElementById("body").style.overflow = 'hidden';
   }
 
   return (
@@ -19,7 +20,7 @@ const Picture = ({profile, onClick, paramId, auth}) => {
         : null }
       <div className="picture">
         { profile && (profile.pictureUrl || profile.imageUrl || profile.avatarUrl)
-          ? <img className="z-depth-1" src={profile.pictureUrl || profile.imageUrl || profile.avatarUrl } alt="dp" />
+          ? <img className="z-depth-1" src={profile.photoUrl || profile.imageUrl || profile.avatarUrl } alt="dp" />
           : <img className="z-depth-1" src={portrait} alt="dp" /> }
 
           <div className="user_basic">

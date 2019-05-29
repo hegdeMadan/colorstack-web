@@ -13,7 +13,7 @@ export const createLike = (like) => {
     .add({
       likeToPost: like.likeToPost,
       likeFromId: userId,
-      likeFrom: `${profile.firstName} ${profile.lastName}`,
+      likeFrom: `${profile.fullName}`,
       likeTime: new Date(),
       isActive: true
     })
@@ -45,7 +45,7 @@ export const removeLike = (like) => {
     .update({
       likeToPost: like.likeToPost,
       likeFromId: userId,
-      likeFrom: `${profile.firstName} ${profile.lastName}`,
+      likeFrom: `${profile.fullName}`,
       likeTime: new Date(),
       isActive: false
     })
@@ -77,7 +77,7 @@ export const updateLike = (like) => {
     .update({
       likeToPost: like.likeToPost,
       likeFromId: userId,
-      likeFrom: `${profile.firstName} ${profile.lastName}`,
+      likeFrom: `${profile.fullName}`,
       likeTime: new Date(),
       isActive: true
     })

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import firebase from 'firebase/app'
 import portrait from '../../../static/portrait.png'
-import { UpdateProfile } from '../../../store/actions/UpdateProfile'
+import { UpdateProfile, updateEmail } from '../../../store/actions/UpdateProfile'
+import { CircularLoader } from '../../../loaders/circular'
 
 class EditProfile extends Component {
   constructor() {
@@ -18,6 +19,7 @@ class EditProfile extends Component {
   // close modal
   closeModal = () => {
     this.props.onClick()
+    document.getElementById("body").style.overflow = 'auto';
   }
 
   // trigger input/file
@@ -55,8 +57,15 @@ class EditProfile extends Component {
       e.preventDefault()
       ref.blur()
     }
-  }
 
+    if(value.length > 160) {
+      targetEl.style.color = 'red'
+      this.setState({quoteLenghthy: true})
+    } else if(value.length <= 160) {
+      targetEl.style.color = 'black'
+      this.setState({quoteLenghthy: false})
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -73,8 +82,9 @@ class EditProfile extends Component {
     const quote = this.quoteRef.current.innerText
     const author = this.refs.author.value
     const experience = this.experienceRef.current.innerText
+    const currentEmail = this.props && this.props.profile && this.props.profile.email
 
-    if(image) {
+    if(image && (quote.length <= 160)) {
       const storage = firebase.storage()
       const storageRef = storage.ref('ProfilePicture/' + image.name) // creating storage reference
 
@@ -91,7 +101,8 @@ class EditProfile extends Component {
         }
       },
       (error) => {
-        console.log(error)
+        this.setState({error})
+        alert(error)
       },
       () => {
         // getting download url for the image
@@ -122,11 +133,14 @@ class EditProfile extends Component {
             }
           }, _ => {
             this.props.UpdateProfile(this.state.userdata)
+            if(email !== undefined && email !== null && email !== '\n' && email !== currentEmail ) {
+              this.props.updateEmail(email)
+            }
             // window.location.reload()
           })
         })
       })
-    } else {
+    } else if(quote.length <= 160) {
       this.setState(() => {
         return {
           userdata: {
@@ -151,6 +165,7 @@ class EditProfile extends Component {
       }, _ => {
         console.log("data: ", this.state.userdata)
         this.props.UpdateProfile(this.state.userdata)
+        this.props.updateEmail(email)
         //window.location.reload()
       })
     }
@@ -189,12 +204,12 @@ class EditProfile extends Component {
                           alt="dp"
                           height="150px"
                           width="150px" />
-                    : <img
+                      : <img
                         src={this.state.imageSrc}
                         alt="dp"
                         height="150px"
                         width="150px" />
-                      }
+                    }
               </div>
               <div className="edit_username">
                 <label htmlFor="uname"> User Name </label>
@@ -272,7 +287,6 @@ class EditProfile extends Component {
               </div>
             </div>
 
-
             <div className="edit_social_info edit_info">
               <div className="in_cover">
                 <div>
@@ -338,15 +352,20 @@ class EditProfile extends Component {
                 onKeyUp={this.countLetter}>
                   {profile && profile.quote && profile.quote.content !== '\n' && profile.quote.content ? profile.quote.content : null }
               </div>
-              <label htmlFor="author"> Author </label>
-              <input id="author" ref="author" type="text" placeholder="author" />
               <span className="helper">
                 this can be somebody else's famous saying or
                 your own inspirationl thought
               </span>
+              { this.state.quoteLenghthy
+                      ? <p className="red-text">
+                          inspirationl quote must not exceed the length of 160 letters
+                        </p>
+                      : null }
               <span
                 className="letter_count"
                 ref={this.counterRef}> </span>
+              <label htmlFor="author"> Author </label>
+              <input id="author" ref="author" type="text" placeholder="author" />
             </div>
 
             <div className="edit_quote edit_experience">
@@ -364,10 +383,18 @@ class EditProfile extends Component {
                 Make it short and readable
               </span>
             </div>
-            <button
-              className="btn z-depth-0">
-                Update
-            </button>
+
+            { this.state.isUploading
+              ? <div className="loader">
+                  <div className="loader_cover">
+                    <CircularLoader />
+                  </div>
+                </div>
+              : <button
+                  className="btn z-depth-0">
+                    Update
+                </button>
+            }
           </div>
         </form>
       </div>
@@ -375,9 +402,10 @@ class EditProfile extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    UpdateProfile: (data) => dispatch(UpdateProfile(data))
+    UpdateProfile: (data) => dispatch(UpdateProfile(data)),
+    updateEmail: (data) => dispatch(updateEmail(data))
   }
 }
 

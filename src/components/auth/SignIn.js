@@ -9,11 +9,14 @@ import { signInWithGoogle, addUserAfterGoogleSignIn } from '../../store/actions/
 import { Redirect } from 'react-router-dom'
 import SignInWithProvider from './signInWithProvider'
 import Intro from '../layout/Intro'
+import { CircularLoader } from '../../loaders/circular'
+// import Lds from '../../loaders/Lds'
 
 class SignIn extends Component {
   state = {
       email: '',
-      password: ''
+      password: '',
+      isLoading: false
   }
 
   handleClick = () => {
@@ -42,6 +45,8 @@ class SignIn extends Component {
     const email = this.refs.email.value
     const password = this.refs.password.value
 
+    this.setState({isLoading: true})
+    
     if(email && password) {
       this.setState(() => {
         return {
@@ -54,8 +59,24 @@ class SignIn extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.err!==this.props.err){
+
+      this.setState({isLoading: false });
+    }
+  }
+
+  // stopLoading = () => {
+  //   this.setState(() => {
+  //     return {
+  //       isLoading: false
+  //     }
+  //   })
+  // }
+
   render() {
     const { err, auth } = this.props // error message
+
     if(auth.uid) return <Redirect to='/' />
     return(
       <div>
@@ -64,33 +85,54 @@ class SignIn extends Component {
                 <Intro />
 
               <div className="sign_in-form">
-
                 <form className="sign-in" onSubmit={this.handleSubmit}>
-                  <div className="input-field">
-                    <input id="email" type="email" ref="email" />
-                    <label htmlFor="email">Email</label>
-                  </div>
-                  <div className="input-field">
-                    <input id="password" type="password" ref="password" />
-                    <label htmlFor="password">Password</label>
-                  </div>
-                  <div className="input-field">
-                    <button className="btn grey darken-3 z-depth-0 sign-in-btn">Login</button>
-                  </div>
-                    <SignInWithProvider onClick={this.handleClick} />
-                  <div> { err ? <p className="red-text darken-5">{err}</p> : null } </div>
-                  <div className="ac_forgot">
-                    <span>
-                      Don't have an account?
-                      <Link to='signup' className="green-text" > SignUp </Link>
-                    </span>
-                    <span>
-                      <Link
-                        to='forgotpassword'
-                        className="blue-text">
-                        Forgot Password?
-                      </Link>
-                    </span>
+                  <div className="form-cover">
+                    <div className="input-field">
+                      <label htmlFor="email">Email</label>
+                      <div>
+                        <i className="material-icons prefix"> email </i>
+                        <input id="email" type="email" ref="email" />
+                      </div>
+                    </div>
+                    <div className="input-field">
+                      <label htmlFor="password">Password</label>
+                      <div>
+                        <i className="material-icons prefix"> lock </i>
+                        <input id="password" type="password" ref="password" />
+                      </div>
+                    </div>
+                    <div className="err_msg"> { err ? <p className="red-text darken-5">{err}</p> : null } </div>
+                    <div className="input-field">
+                      {/* { this.state && this.state.isLoading
+                        ? <Lds />
+                        : <button
+                            className="btn grey darken-3 z-depth-0 sign-in-btn"
+                            onClick={this.displayLoading}>
+                            Login
+                          </button>
+                      } */}
+                      { this.state.isLoading
+                            ? <div className="cLoader"> <CircularLoader /> </div>
+                            : <button
+                                  className="sign-in-btn">
+                                    Login
+                              </button> }
+
+                    </div>
+                        <SignInWithProvider onClick={this.handleClick} />
+                    <div className="ac_forgot">
+                      <span>
+                        Don't have an account?
+                        <Link to='signup' className="sign-in-upfont" > SignUp </Link>
+                      </span>
+                      <span>
+                        <Link
+                          to='forgotpassword'
+                          className="blue-text">
+                          Forgot Password?
+                        </Link>
+                      </span>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -102,7 +144,7 @@ class SignIn extends Component {
 
 // accessing error message from the authReducer
 const mapStateToProps = (state) => {
-  // console.log(state)
+  console.log(state)
   return {
     err: state.auth.authStatus,
     auth: state.firebase.auth

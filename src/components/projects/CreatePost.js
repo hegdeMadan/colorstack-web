@@ -5,6 +5,10 @@ import firebase from 'firebase/app'
 import { createProject, createAlbum } from '../../store/actions/ProjectActions'
 import AddToAlbum from './AddToAlbum'
 import Preview from './Preview'
+import { CircularLoader } from '../../loaders/circular'
+
+const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
+const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
 
 class CreatePost extends Component {
   constructor() {
@@ -49,9 +53,10 @@ class CreatePost extends Component {
     const isAlbum = (this.state.album && this.state.album.albumName) || this.state.album.albumId ? true : false
     const albumId = this.state.album && this.state.album.albumId ? this.state.album.albumId : null
     const albumName = this.state.album.albumName ? this.state.album.albumName : null
-    const message = "Please choose an image! Or if you want to write your ideas or thoughts only, post it on our blog"
+    const message = "Please choose an image an image to upload!"
     const image = this.refs.image.files[0] ? this.refs.image.files[0] : alert(message)
-
+    const authorImage = this.props && (this.props.profile.imageUrl || this.props.profile.avatarUrl)
+    console.log(authorImage)
     if(this.refs.image.files[0]) {
        if(!isAlbum && this.refs.image.files.length === 1) {
         const storage = firebase.storage()
@@ -79,7 +84,8 @@ class CreatePost extends Component {
               return {
                 toUpload: {
                   content,
-                  imageUrl
+                  imageUrl,
+                  authorImage
                 }
               }
             }, () => {
@@ -117,12 +123,13 @@ class CreatePost extends Component {
                   content,
                   imageUrl,
                   albumName,
-                  albumId
+                  albumId,
+                  authorImage
                 }
               }
             }, () => {
               this.props.createAlbum(this.state.album)
-              this.props.history.push('/')
+              // this.props.history.push('/')
             })
           })
         })
@@ -135,6 +142,14 @@ class CreatePost extends Component {
     event.persist()
     const input = event.target
     const files = input.files
+    const fileType = files[0].type.toLowerCase()
+    // console.log("fileType", fileType);
+    
+    let isValid = true
+    if(!acceptedFileTypesArray.includes(fileType)) {
+      alert("invalid file! you can upload images only")
+      isValid = false
+    } 
     this.setState(() => {
       return {
         imageCount: files.length
@@ -146,7 +161,7 @@ class CreatePost extends Component {
     let imageArray = []
     let dataURL = {}
 
-    if(files.length > 1) {
+    if((files.length > 1) && (isValid) ) {
       Array.prototype.forEach.call(files, (file) => {
         // let file = input.files[i]
         let reader = new FileReader()
@@ -166,7 +181,7 @@ class CreatePost extends Component {
       }, () => {
         console.log("preview state: ", this.state.preview)
       })
-    } else {
+    } else if(isValid) {
       reader.onload = (e) => {
         const dataURL = {url: reader.result}
         console.log("img: ", e.target.result)
@@ -201,7 +216,7 @@ class CreatePost extends Component {
   }
 
   addToCategory = () => {
-    console.log("works!")
+    
   }
 
   handleClick = (album) => {
@@ -232,7 +247,6 @@ class CreatePost extends Component {
 
           <form
             className="post_create"
-            onSubmit={this.handleSubmit}
             ref={this.formRef}>
             <div className="thought">
               <div
@@ -246,18 +260,21 @@ class CreatePost extends Component {
             </div>
             <div className="posting_optn">
               <div onClick={this.handleInputTrigger}>
-                <i className="material-icons">
-                    add_photo_alternate
-                </i>
+                <span>
+                  <i className="material-icons">
+                      add_photo_alternate
+                  </i>
+                </span>
+                <span> add photo </span>
               </div>
-              <div>
+              {/* <div>
                 <i
                   className="material-icons"
                   onClick={this.addToCategory}>
                     local_offer
                 </i>
-              </div>
-                <div title="add to album" onClick={this.displayAlbum}>
+              </div> */}
+                {/* <div title="add to album" onClick={this.displayAlbum}>
                   <i className="material-icons">
                       photo_library
                       <i
@@ -271,13 +288,13 @@ class CreatePost extends Component {
                         arrow_drop_up
                       </i>
                   </i>
-                </div>
+                </div> */}
               <input
                 type="file"
+                accept="image/*"
                 ref="image"
                 className="add_post_img"
-                onChange={this.handleFile}
-                multiple />
+                onChange={this.handleFile} />
             </div>
 
               { this.state && this.state.imageCount === 0
@@ -310,21 +327,28 @@ class CreatePost extends Component {
                 <i className="material-icons">check</i>
               </button>
             </div>*/}
-            { this.state.progress !== 0 && this.state.progress !== 100
-              ? <div className="input-field submit_post">
-                  <button
-                    className="btn z-depth-0">
-                    <div className="upload-anim" style={this.state.style}>
-                      <div className="lds-ripple"><div></div><div></div></div>
-                    </div>
-                  </button>
-                </div>
+            { this.state.progress > 0
+              ? <div className="loader">
+                  <div className="loader_cover">
+                      <CircularLoader />
+                      <span className="progress_count"> {Math.round(this.state.progress)}% </span>
+                  </div>
+                </div> 
               : <div className="input-field submit_post">
                   <button
+                    onClick={this.handleSubmit}
                     className="btn z-depth-0">
-                    Create
+                    Upload
                   </button>
                 </div> }
+
+{/* <div className="input-field submit_post">
+                  <button
+                    className="btn z-depth-0">
+                      <CircularLoader />
+                      <span className="progress_count"> 10% </span>
+                  </button>
+                </div> */}
           </form>
         </div>
       </div>
@@ -334,9 +358,10 @@ class CreatePost extends Component {
 
 // retrieving aut uid from firebase to store passing it as props
 const mapStateToProps = (state) => {
-  // console.log(state)
+  console.log("user image", state)
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
   }
 }
 
