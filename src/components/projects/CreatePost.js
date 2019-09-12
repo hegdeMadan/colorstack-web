@@ -252,7 +252,7 @@ class CreatePost extends Component {
               <div
                 className="edt_wrap editable"
                 contentEditable="true"
-                data-placeholder="write thoughts or story to it..."
+                data-placeholder="write thoughts or story..."
                 role="textbox"
                 ref={this.contents}
                 onKeyPress={this.handleKeyPress}>

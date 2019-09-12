@@ -9,8 +9,7 @@ const collectionReducer = (state = {}, action) => {
             error: action.error
           }
     default:
-            return state
-
+          return state
   }
 }
 

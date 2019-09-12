@@ -14,6 +14,7 @@ import ProjectList from '../projects/ProjectList'
 // import Footer from './Footer'
 // import Spinner from '../../loaders/Spinner'
 import CreatePost from '../projects/CreatePost'
+import { CreatePostMobile } from '../projects/CreatePostMobile'
 // import Category from './Category'
 import Users from './Users'
 // import Intro from '../layout/Intro'
@@ -21,11 +22,14 @@ import Users from './Users'
 class Dashboard extends Component {
   constructor() {
     super()
+
     this.post = []
     this.users = []
     this.lastVisible = ''
     this.followers = []
     this.notificationPanel = React.createRef()
+    this.createPost = React.createRef()
+
     this.state = {
       isAlbumSelected: false,
       isLoading: true,
@@ -210,9 +214,10 @@ class Dashboard extends Component {
               <Category auth={auth} profile={profile} storeId={storeId} />
             </div> */}
             <div className="col l5 offset-l1 m8 offset-m2 s12">
-              <div className="hide-on-large-only">
+              <div className="hide-on-med-and-up" ref={this.createPost}>
               {/* <a href="whatsapp://send?text=The text to share!" data-action="share/whatsapp/share">Share via Whatsapp</a> */}
                 <CreatePost />
+                <CreatePostMobile />
               </div>
               {/*<div>
                 <Album />
@@ -229,7 +234,6 @@ class Dashboard extends Component {
                       </span>
                     </div>
                   </div>
-
 
             </div>
             <div className="col l4 offset-l1 hide-on-med-and-down">

@@ -9,7 +9,7 @@ import AddComment from './projectActs/AddComment'
 import PostCredits from './projectActs/PostCredits'
 import Comments from './projectActs/Comments'
 // import FixedCategories from './Categories'
-import { ShowImage } from './ShowImage'
+// import { ShowImage } from './ShowImage'
 
 class ProjectSummary extends Component{
   constructor() {
@@ -32,7 +32,7 @@ class ProjectSummary extends Component{
     const { project, auth, comments } = this.props ? this.props : null // changes done
     const likeCount = project.likeCount ? project.likeCount : 0
     const collected = project.collected ? project.collected : 0
-    // console.log(this.props.comments)
+    // console.log("project: ", project)
 
     const name = project && project.authorName
     const nameArr = name.split(' ')
