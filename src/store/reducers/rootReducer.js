@@ -12,6 +12,8 @@ import { firebaseReducer } from 'react-redux-firebase'
 
 // combining reducers all here
 const rootReducer = combineReducers({
+  firestore: firestoreReducer,
+  firebase: firebaseReducer,
   auth: authReducer,
   project: projectReducer,
   profile: profileReducer,
@@ -20,8 +22,6 @@ const rootReducer = combineReducers({
   profileUpdate: profileUpdate,
   following: followReducer,
   collection: collectionReducer,
-  firestore: firestoreReducer,
-  firebase: firebaseReducer
 })
 
 export default rootReducer

@@ -1,7 +1,7 @@
 export const createComment = (comment) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return (dispatch, getState, getFirebase) => {
 
-    const firestore = getFirestore()
+    const firestore = getFirebase().firestore()
     const profile = getState().firebase.profile
     const userId = getState().firebase.auth.uid
     const projectId = comment.commentToPost
@@ -25,9 +25,9 @@ export const createComment = (comment) => {
 }
 
 export const commentReply = (data) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return (dispatch, getState, getFirebase) => {
 
-    const firestore = getFirestore()
+    const firestore = getFirebase().firestore()
     const profile = getState().firebase.profile
     const userId = getState().firebase.auth.uid
     const { projectId } = data

@@ -7,27 +7,46 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './store/reducers/rootReducer'
 import  { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import { reduxFirestore, getFirestore } from 'redux-firestore'
-import { reactReduxFirebase, getFirebase } from 'react-redux-firebase'
+import { createFirestoreInstance } from 'redux-firestore'
+import { getFirebase, ReactReduxFirebaseProvider } from 'react-redux-firebase'
 import fbConfig from './config/fbConfig'
 
-// setting up store
-const store = createStore(rootReducer,
+const middlewares = [
+  thunk.withExtraArgument(getFirebase)
+]
+
+const initialState = window && window.__INITIAL_STATE__
+
+const rfConfig = {
+  userProfile: 'users',
+  useFirestoreForProfile: true,
+  enableClaims: true
+}
+
+const store = createStore(
+  rootReducer,
+  initialState,
   compose(
-    applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reduxFirestore(fbConfig),
-    reactReduxFirebase(fbConfig, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true })
+    applyMiddleware(...middlewares)
   )
 )
-store.firebaseAuthIsReady.then(() => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root'));
-})
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
+const BaseApp = () => (
+  <Provider store={store}>
+    <ReactReduxFirebaseProvider
+      firebase={fbConfig}
+      config={rfConfig}
+      dispatch={store.dispatch}
+      createFirestoreInstance={createFirestoreInstance}
+    >
+      <App />
+    </ReactReduxFirebaseProvider>
+  </Provider>
+);
+
+ReactDOM.render(
+  <BaseApp />,
+  document.getElementById('root')
+);
+
 serviceWorker.register();

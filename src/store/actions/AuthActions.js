@@ -1,5 +1,5 @@
 export const signInAction = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
+  return (dispatch, getState, getFirebase) => {
     let firebase = getFirebase() // initializing firebase
 
     // calling dispatch after passing credentials to firebase
@@ -17,7 +17,7 @@ export const signInAction = (credentials) => {
 
 // logging user out
 export const signOutAction = () => {
-  return(dispatch, getState, { getFirebase }) => {
+  return(dispatch, getState, getFirebase) => {
     let firebase = getFirebase() // initializing firebase
 
     // dispatch is called from onclick on logout
@@ -29,7 +29,7 @@ export const signOutAction = () => {
 
 // user signup storing user data into firebase
 export const signUpAction = (newUser) => {
-  return(dispatch, getState, { getFirebase, getFirestore }) => {
+  return(dispatch, getState, getFirebase, getFirestore) => {
     let firebase = getFirebase() // initializing firebase
     let firestore = getFirestore()
     let email = newUser.email
@@ -56,7 +56,7 @@ export const signUpAction = (newUser) => {
 }
 
 export const recoverPassword = (email) => {
-  return (dispatch, getState, { getFirebase }) => {
+  return (dispatch, getState, getFirebase ) => {
     const firebase = getFirebase()
     const auth = firebase.auth()
     const emailId = email.email
@@ -72,7 +72,7 @@ export const recoverPassword = (email) => {
 }
 
 export const signInWithGoogle = () => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return (dispatch, getState, getFirebase) => {
     const firebase = getFirebase()
     // const firestore = getFirestore()
 
@@ -131,7 +131,7 @@ export const signInWithGoogle = () => {
 
 export const addUserAfterGoogleSignIn = () => {
   // console.log("1 fired")
-  return(dispatch, getState, { getFirebase, getFirestore }) => {
+  return(dispatch, getState, getFirebase, getFirestore) => {
   // console.log("2 fired")
     const firebase = getFirebase()
     const firestore = getFirestore()
