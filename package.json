@@ -1,0 +1,37 @@
+{
+  "name": "ColorStack",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "firebase": "^6.0.2",
+    "firebase-tools": "^6.10.0",
+    "firebaseui": "^3.6.0",
+    "moment": "^2.24.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-dropzone": "^8.0.4",
+    "react-image-crop": "^6.0.12",
+    "react-redux": "^5.1.1",
+    "react-redux-firebase": "^2.2.6",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.1.8",
+    "redux": "^4.0.1",
+    "redux-firestore": "^0.6.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
